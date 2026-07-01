@@ -1,0 +1,17 @@
+{
+  "name": "ohday",
+  "version": "1.0.0",
+  "description": "Lightweight date/time processing library",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./plugins/*": "./dist/plugins/*"
+  },
+  "files": ["dist"]
+}
