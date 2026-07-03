@@ -2,6 +2,8 @@
   "name": "ohday",
   "version": "1.0.0",
   "description": "Chainable, immutable, lightweight date/time processing library",
+  "author": "Twisuki",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -13,17 +15,21 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "sideEffects": false,
-  "author": "Twisuki",
   "files": [
     "dist"
   ],
   "scripts": {
     "check": "tsc --noEmit",
-    "build": "tsup"
+    "build": "pnpm -w lint && pnpm check && pnpm test:run && tsup",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
   },
   "devDependencies": {
+    "@vitest/ui": "^4.1.9",
+    "dayjs": "^1.11.21",
     "tsup": "^8.5.1",
-    "typescript": "^6.0.0"
+    "typescript": "^6.0.0",
+    "vitest": "^4.1.9"
   }
 }
