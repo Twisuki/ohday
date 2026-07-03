@@ -1,4 +1,25 @@
-import { DEFAULT_FORMAT, REGEX_DATE_SEP, REGEX_DIGITS, REGEX_TIME_SEP } from "./const"
+import {
+  DEFAULT_FORMAT,
+  FORMAT_TOKEN_D,
+  FORMAT_TOKEN_DD,
+  FORMAT_TOKEN_H,
+  FORMAT_TOKEN_HH,
+  FORMAT_TOKEN_KEY_MAP,
+  FORMAT_TOKEN_M,
+  FORMAT_TOKEN_m,
+  FORMAT_TOKEN_MM,
+  FORMAT_TOKEN_mm,
+  FORMAT_TOKEN_REGEX_MAP,
+  FORMAT_TOKEN_s,
+  FORMAT_TOKEN_ss,
+  FORMAT_TOKEN_SSS,
+  FORMAT_TOKEN_YY,
+  FORMAT_TOKEN_YYYY,
+  OBJECT_KEYS,
+  REGEX_DATE_SEP,
+  REGEX_DIGITS,
+  REGEX_TIME_SEP,
+} from "./const"
 import { OhDay } from "./ohday"
 
 /**
@@ -15,7 +36,65 @@ export type OhDayLike = Date | OhDay | string | number | number[] | {
   ms?: number
 }
 
-export function parseString(input: string): Date | null {
+/**
+ * @description 转义正则表达式特殊字符
+ */
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+/**
+ * @description 解析字符串为 Date 对象, 支持自定义格式
+ *   - 默认支持格式有: -分割的日期, /分割的日期, :分割的时间, 空格分割的日期和时间, .分割的毫秒
+ */
+export function parseString(input: string, format?: string): Date | null {
+  if (format) {
+    let pattern = "^"
+    const fields: string[] = []
+    let i = 0
+
+    while (i < format.length) {
+      let matched = false
+      for (const [token, regexPart] of Object.entries(FORMAT_TOKEN_REGEX_MAP)) {
+        if (format.startsWith(token, i)) {
+          pattern += regexPart
+          fields.push(FORMAT_TOKEN_KEY_MAP[token])
+          i += token.length
+          matched = true
+          break
+        }
+      }
+      if (!matched) {
+        pattern += escapeRegExp(format[i])
+        i++
+      }
+    }
+
+    pattern += "$"
+    const regex = new RegExp(pattern)
+    const match = input.match(regex)
+    if (!match)
+      return null
+
+    const values: (number | undefined)[] = Array.from({ length: OBJECT_KEYS.length })
+
+    for (let idx = 0; idx < fields.length; idx++) {
+      const fieldName = fields[idx] as typeof OBJECT_KEYS[number]
+      const valueStr = match[idx + 1]
+      const keyIndex = OBJECT_KEYS.indexOf(fieldName)
+      if (keyIndex !== -1) {
+        values[keyIndex] = valueStr ? Number(valueStr) : undefined
+      }
+    }
+
+    // YY 补充为 20xx
+    if (values[0] !== undefined && values[0] < 100) {
+      values[0] += 2000
+    }
+
+    return complete(...values as [number | undefined, number | undefined, number | undefined, number | undefined, number | undefined, number | undefined, number | undefined])
+  }
+
   const hasDateSep = REGEX_DATE_SEP.test(input)
   const hasTimeSep = REGEX_TIME_SEP.test(input)
 
@@ -26,39 +105,43 @@ export function parseString(input: string): Date | null {
     const [datePart, timePart] = input.split(/\s+/)
     const dateNums = datePart.match(REGEX_DIGITS) ?? []
     const timeNums = timePart.match(REGEX_DIGITS) ?? []
-    const [year, month, date] = dateNums
-    const [hour, minute, second, ms] = timeNums
-    return new Date(
-      Number(year),
-      Number(month) - 1,
-      Number(date) || 1,
-      Number(hour) || 0,
-      Number(minute) || 0,
-      Number(second) || 0,
-      Number(ms) || 0,
+    return complete(
+      Number(dateNums[0]),
+      Number(dateNums[1]),
+      Number(dateNums[2]),
+      Number(timeNums[0]),
+      Number(timeNums[1]),
+      Number(timeNums[2]),
+      timeNums[3] ? Number(timeNums[3]) : undefined,
     )
   }
 
   if (hasDateSep) {
     const nums = input.match(REGEX_DIGITS) ?? []
-    const [year, month, date] = nums
-    return new Date(Number(year), Number(month) - 1, Number(date) || 1, 0, 0, 0, 0)
+    return complete(
+      Number(nums[0]),
+      Number(nums[1]),
+      Number(nums[2]),
+    )
   }
 
   const nums = input.match(REGEX_DIGITS) ?? []
-  const [hour, minute, second, ms] = nums
-  const now = new Date()
-  return new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    Number(hour) || 0,
-    Number(minute) || 0,
-    Number(second) || 0,
-    Number(ms) || 0,
+  return complete(
+    undefined,
+    undefined,
+    undefined,
+    Number(nums[0]),
+    Number(nums[1]),
+    Number(nums[2]),
+    nums[3] ? Number(nums[3]) : undefined,
   )
 }
 
+/**
+ * @description 缺省补齐函数
+ *   - 补齐规则: 时间缺省为 0, 日期低位缺省为 1, 日期高位缺省为当前日期
+ *   - 当所有值都缺省时, 返回当前时间
+ */
 export function complete(year?: number, month?: number, date?: number, hour?: number, minute?: number, second?: number, ms?: number): Date {
   const now = new Date()
   const hasYear = year !== undefined
@@ -76,7 +159,10 @@ export function complete(year?: number, month?: number, date?: number, hour?: nu
   return new Date(y, M - 1, d, h, m, s, msVal)
 }
 
-export function parseInput(input?: OhDayLike): Date {
+/**
+ * @description 解析输入为 Date 对象, 支持 Date 对象, OhDay 对象, 字符串, 时间戳, 时间数组和时间对象
+ */
+export function parseInput(input?: OhDayLike, format?: string): Date {
   if (!input)
     return new Date()
 
@@ -90,18 +176,12 @@ export function parseInput(input?: OhDayLike): Date {
     return new Date(input)
 
   if (typeof input === "string") {
-    const parsed = parseString(input)
-    if (parsed) {
-      return complete(parsed.getFullYear(), parsed.getMonth() + 1, parsed.getDate(), parsed.getHours(), parsed.getMinutes(), parsed.getSeconds(), parsed.getMilliseconds())
-    }
-    const isoDate = new Date(input)
-    if (!Number.isNaN(isoDate.getTime())) {
-      return complete(isoDate.getFullYear(), isoDate.getMonth() + 1, isoDate.getDate(), isoDate.getHours(), isoDate.getMinutes(), isoDate.getSeconds(), isoDate.getMilliseconds())
-    }
+    const d = parseString(input, format)
+    return d ?? new Date(input)
   }
 
   if (Array.isArray(input)) {
-    return complete(input[0], input[1], input[2], input[3], input[4], input[5], input[6])
+    return complete(...input as [number | undefined, number | undefined, number | undefined, number | undefined, number | undefined, number | undefined, number | undefined])
   }
 
   if (typeof input === "object") {
@@ -112,6 +192,9 @@ export function parseInput(input?: OhDayLike): Date {
   return new Date()
 }
 
+/**
+ * @description 格式化 Date 对象为字符串, 支持自定义格式
+ */
 export function formatDate(date: Date, formatStr: string = DEFAULT_FORMAT): string {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -121,15 +204,36 @@ export function formatDate(date: Date, formatStr: string = DEFAULT_FORMAT): stri
   const second = date.getSeconds()
   const ms = date.getMilliseconds()
 
-  return formatStr.replace(/YYYY|MM|DD|HH|mm|ss|ms/g, (token) => {
+  const tokenRegex = new RegExp([
+    FORMAT_TOKEN_YYYY,
+    FORMAT_TOKEN_YY,
+    FORMAT_TOKEN_MM,
+    FORMAT_TOKEN_M,
+    FORMAT_TOKEN_DD,
+    FORMAT_TOKEN_D,
+    FORMAT_TOKEN_HH,
+    FORMAT_TOKEN_H,
+    FORMAT_TOKEN_mm,
+    FORMAT_TOKEN_m,
+    FORMAT_TOKEN_ss,
+    FORMAT_TOKEN_s,
+    FORMAT_TOKEN_SSS,
+  ].join("|"), "g")
+  return formatStr.replace(tokenRegex, (token) => {
     switch (token) {
-      case "YYYY": return String(year)
-      case "MM": return month < 10 ? `0${month}` : String(month)
-      case "DD": return day < 10 ? `0${day}` : String(day)
-      case "HH": return hour < 10 ? `0${hour}` : String(hour)
-      case "mm": return minute < 10 ? `0${minute}` : String(minute)
-      case "ss": return second < 10 ? `0${second}` : String(second)
-      case "ms": return ms < 10 ? `00${ms}` : ms < 100 ? `0${ms}` : String(ms)
+      case FORMAT_TOKEN_YYYY: return String(year)
+      case FORMAT_TOKEN_YY: return String(year % 100).padStart(2, "0")
+      case FORMAT_TOKEN_MM: return String(month).padStart(2, "0")
+      case FORMAT_TOKEN_M: return String(month)
+      case FORMAT_TOKEN_DD: return String(day).padStart(2, "0")
+      case FORMAT_TOKEN_D: return String(day)
+      case FORMAT_TOKEN_HH: return String(hour).padStart(2, "0")
+      case FORMAT_TOKEN_H: return String(hour)
+      case FORMAT_TOKEN_mm: return String(minute).padStart(2, "0")
+      case FORMAT_TOKEN_m: return String(minute)
+      case FORMAT_TOKEN_ss: return String(second).padStart(2, "0")
+      case FORMAT_TOKEN_s: return String(second)
+      case FORMAT_TOKEN_SSS: return String(ms).padStart(3, "0")
     }
     return token
   })

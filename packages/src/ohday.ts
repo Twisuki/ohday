@@ -1,6 +1,23 @@
 import type { OhDayFlag } from "./const"
 import type { OhDayLike } from "./format"
-import { DEFAULT_FORMAT, FLAG_DATE, FLAG_MONTH, FLAG_MS, FLAG_YEAR, MS_A_DAY, MS_A_HOUR, MS_A_MINUTE, MS_A_SECOND } from "./const"
+import {
+  DEFAULT_FORMAT,
+  FLAG_DATE,
+  FLAG_MONTH,
+  FLAG_MS,
+  FLAG_YEAR,
+  MS_A_DAY,
+  MS_A_HOUR,
+  MS_A_MINUTE,
+  MS_A_SECOND,
+  OBJECT_KEY_DATE,
+  OBJECT_KEY_HOUR,
+  OBJECT_KEY_MINUTE,
+  OBJECT_KEY_MONTH,
+  OBJECT_KEY_MS,
+  OBJECT_KEY_SECOND,
+  OBJECT_KEY_YEAR,
+} from "./const"
 import { formatDate, parseInput } from "./format"
 import { daysOfMonth, flag, getFlagByIndex, getFlagIndex, isLeapYear } from "./util"
 
@@ -16,9 +33,10 @@ export class OhDay {
   /**
    * @description OhDay 构造函数, 用于创建一个新的 OhDay 实例
    * @param input 可被 OhDay 直接解析的时间类型, 包括 Date 对象, 时间字符串, 时间戳, 数字数组以及时间对象
+   * @param format 可选的格式化字符串, 用于解析时间字符串
    */
-  constructor(input?: OhDayLike) {
-    this.$d = parseInput(input)
+  constructor(input?: OhDayLike, format?: string) {
+    this.$d = parseInput(input, format)
   }
 
   // region 信息
@@ -455,7 +473,15 @@ export class OhDay {
     const l = getFlagIndex(scope ?? FLAG_MS)
     for (let i = 0; i <= l; i++) {
       const s = getFlagByIndex(i)
-      const key = flag<string>(s, ["year", "month", "date", "hour", "minute", "second", "ms"], FLAG_MS)
+      const key = ([
+        OBJECT_KEY_YEAR,
+        OBJECT_KEY_MONTH,
+        OBJECT_KEY_DATE,
+        OBJECT_KEY_HOUR,
+        OBJECT_KEY_MINUTE,
+        OBJECT_KEY_SECOND,
+        OBJECT_KEY_MS,
+      ] as const)[i]
       obj = { ...obj, [key]: this.getValueByScope(s) }
     }
     return obj
@@ -492,10 +518,11 @@ export class OhDay {
 /**
  * @description 创建一个新的 OhDay 实例的工厂函数
  * @param input 可被 OhDay 直接解析的时间类型, 包括 Date 对象, 时间字符串, 时间戳, 数字数组以及时间对象
+ * @param format 可选的格式化字符串, 用于解析时间字符串
  * @example
  * ```ts
  * // 创建一个新的 OhDay 实例
  * od("2026-01-01 12:00:00") // OhDay实例
  * ```
  */
-export const od = (input?: OhDayLike): OhDay => new OhDay(input)
+export const od = (input?: OhDayLike, format?: string): OhDay => new OhDay(input, format)
