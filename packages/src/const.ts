@@ -1,4 +1,15 @@
+/**
+ * @description 用于标记时间单位的 Flag 类型
+ */
 export type OhDayFlag = "y" | "M" | "d" | "h" | "m" | "s" | "ms"
+
+export const FLAG_YEAR = "y"
+export const FLAG_MONTH = "M"
+export const FLAG_DATE = "d"
+export const FLAG_HOUR = "h"
+export const FLAG_MINUTE = "m"
+export const FLAG_SECOND = "s"
+export const FLAG_MS = "ms"
 
 export const SECOND_A_MINUTE = 60
 export const SECOND_A_HOUR = SECOND_A_MINUTE * 60

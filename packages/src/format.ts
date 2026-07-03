@@ -1,7 +1,10 @@
 import { DEFAULT_FORMAT, REGEX_DATE_SEP, REGEX_DIGITS, REGEX_TIME_SEP } from "./const"
 import { OhDay } from "./ohday"
 
-export type OhDayLike = Date | string | number | number[] | {
+/**
+ * @description 可接受的时间输入类型, 包括 Date 对象, OhDay 对象, 字符串, 时间戳, 时间数组和时间对象
+ */
+export type OhDayLike = Date | OhDay | string | number | number[] | {
   year?: number
   month?: number
   date?: number

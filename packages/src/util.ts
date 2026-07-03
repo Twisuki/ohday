@@ -1,15 +1,15 @@
 import type { OhDayFlag } from "./const"
-import { DAY_OF_MONTH } from "./const"
+import { DAY_OF_MONTH, FLAG_DATE, FLAG_HOUR, FLAG_MINUTE, FLAG_MONTH, FLAG_MS, FLAG_SECOND, FLAG_YEAR } from "./const"
 
-const FLAG_INDEX: Record<OhDayFlag, number> = { y: 0, M: 1, d: 2, h: 3, m: 4, s: 5, ms: 6 }
-const FLAG_BY_INDEX: OhDayFlag[] = ["y", "M", "d", "h", "m", "s", "ms"]
+const FLAG_INDEX: Record<OhDayFlag, number> = { [FLAG_YEAR]: 0, [FLAG_MONTH]: 1, [FLAG_DATE]: 2, [FLAG_HOUR]: 3, [FLAG_MINUTE]: 4, [FLAG_SECOND]: 5, [FLAG_MS]: 6 }
+const FLAG_BY_INDEX: OhDayFlag[] = [FLAG_YEAR, FLAG_MONTH, FLAG_DATE, FLAG_HOUR, FLAG_MINUTE, FLAG_SECOND, FLAG_MS]
 
 export function getFlagIndex(f: OhDayFlag): number {
   return FLAG_INDEX[f]
 }
 
 export function getFlagByIndex(index: number): OhDayFlag {
-  return FLAG_BY_INDEX[index] ?? "ms"
+  return FLAG_BY_INDEX[index] ?? FLAG_MS
 }
 
 export function flag<T>(f: OhDayFlag, cases: T[], def: T): T {
