@@ -1,7 +1,7 @@
 {
   "name": "ohday",
   "version": "1.0.0",
-  "description": "Lightweight date/time processing library",
+  "description": "Chainable, immutable, lightweight date/time processing library",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -13,11 +13,14 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "author": "Twisuki",
   "files": [
     "dist"
   ],
   "scripts": {
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "build": "tsup"
   },
   "devDependencies": {
     "tsup": "^8.5.1",

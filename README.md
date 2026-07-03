@@ -1,1 +1,1 @@
-# ohday - Lightweight date/time processing library
+# ohday - Chainable, immutable, lightweight date/time processing library
