@@ -27,7 +27,8 @@ export const FLAGS = [
 export const SECOND_A_MINUTE = 60
 export const SECOND_A_HOUR = SECOND_A_MINUTE * 60
 export const SECOND_A_DAY = SECOND_A_HOUR * 24
-
+export const DAY_A_MONTH = 30.4375
+export const DAY_A_YEAR = 365.25
 export const MS_A_SECOND = 1e3
 export const MS_A_MINUTE = SECOND_A_MINUTE * MS_A_SECOND
 export const MS_A_HOUR = SECOND_A_HOUR * MS_A_SECOND

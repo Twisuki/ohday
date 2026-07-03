@@ -1,25 +1,8 @@
 import type { OhDayFlag } from "./const"
 import type { OhDayLike } from "./format"
-import {
-  DEFAULT_FORMAT,
-  FLAG_DATE,
-  FLAG_MONTH,
-  FLAG_MS,
-  FLAG_YEAR,
-  MS_A_DAY,
-  MS_A_HOUR,
-  MS_A_MINUTE,
-  MS_A_SECOND,
-  OBJECT_KEY_DATE,
-  OBJECT_KEY_HOUR,
-  OBJECT_KEY_MINUTE,
-  OBJECT_KEY_MONTH,
-  OBJECT_KEY_MS,
-  OBJECT_KEY_SECOND,
-  OBJECT_KEY_YEAR,
-} from "./const"
+import { DAY_A_MONTH, DAY_A_YEAR, DEFAULT_FORMAT, FLAG_DATE, FLAG_MONTH, FLAG_MS, FLAG_YEAR, MS_A_DAY, MS_A_HOUR, MS_A_MINUTE, MS_A_SECOND, OBJECT_KEY_DATE, OBJECT_KEY_HOUR, OBJECT_KEY_MINUTE, OBJECT_KEY_MONTH, OBJECT_KEY_MS, OBJECT_KEY_SECOND, OBJECT_KEY_YEAR } from "./const"
 import { formatDate, parseInput } from "./format"
-import { daysOfMonth, flag, getFlagByIndex, getFlagIndex, isLeapYear } from "./util"
+import { daysOfMonth, flag, getFlagByIndex, getFlagIndex } from "./util"
 
 export { OhDayFlag } from "./const"
 export { OhDayLike } from "./format"
@@ -311,13 +294,18 @@ export class OhDay {
     const that = new OhDay(thatDate)
     const diffMs = this.ts - that.ts
 
+    const diffYears = this.year - that.year
+    const diffMonths = (this.year - that.year) * 12 + (this.month - that.month)
+
     return flag(unit ?? FLAG_MS, [
-      float ? diffMs / MS_A_DAY / (isLeapYear(this.year) ? 366 : 365) : this.year - that.year,
-      float ? diffMs / MS_A_DAY / daysOfMonth(this.year, this.month) : (this.year - that.year) * 12 + (this.month - that.month),
-      float ? diffMs / MS_A_DAY : Math.floor(diffMs / MS_A_DAY),
-      float ? diffMs / MS_A_HOUR : Math.floor(diffMs / MS_A_HOUR),
-      float ? diffMs / MS_A_MINUTE : Math.floor(diffMs / MS_A_MINUTE),
-      float ? diffMs / MS_A_SECOND : Math.floor(diffMs / MS_A_SECOND),
+      // 当且仅当毫秒差值和年份差值同号时需要修正, 修正方向为正数 - 1, 负数 + 1
+      float ? diffMs / (MS_A_DAY * DAY_A_YEAR) : diffYears + (diffMs * (that.add("y", diffYears).ts - this.ts) > 0 ? diffMs > 0 ? -1 : 1 : 0),
+      float ? diffMs / (MS_A_DAY * DAY_A_MONTH) : diffMonths + (diffMs * (that.add("M", diffMonths).ts - this.ts) > 0 ? diffMs > 0 ? -1 : 1 : 0),
+      // 为了正负都正常处理, 使用向 0 取整
+      float ? diffMs / MS_A_DAY : Math.trunc(diffMs / MS_A_DAY),
+      float ? diffMs / MS_A_HOUR : Math.trunc(diffMs / MS_A_HOUR),
+      float ? diffMs / MS_A_MINUTE : Math.trunc(diffMs / MS_A_MINUTE),
+      float ? diffMs / MS_A_SECOND : Math.trunc(diffMs / MS_A_SECOND),
       diffMs,
     ], diffMs)
   }
@@ -334,7 +322,9 @@ export class OhDay {
    * ```
    */
   len(scope: OhDayFlag, unit?: OhDayFlag, float?: boolean): number {
-    return this.ce(scope).diff(this.cs(scope), unit, float)
+    const s = this.ce(scope)
+    const e = s.add(scope, 1)
+    return e.diff(s, unit, float)
   }
   // endregion
 

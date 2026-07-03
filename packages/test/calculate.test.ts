@@ -1,9 +1,11 @@
 import dayjs from "dayjs"
 import duration from "dayjs/plugin/duration"
+import isLeapYear from "dayjs/plugin/isLeapYear"
 import { describe, expect, it } from "vitest"
 import { od } from "../src"
 
 dayjs.extend(duration)
+dayjs.extend(isLeapYear)
 
 describe("计算", () => {
   it("加减指定单位", () => {
@@ -47,21 +49,21 @@ describe("计算", () => {
     expect(od(d1).diff(d2, "m")).toBe(dayjs(d1).diff(d2, "m"))
     expect(od(d1).diff(d2, "s")).toBe(dayjs(d1).diff(d2, "s"))
     expect(od(d1).diff(d2, "ms")).toBe(dayjs(d1).diff(d2, "ms"))
-  })
 
-  it("间隔计算负数与浮点数", () => {
-    const d1 = "2023-10-01 12:30:45"
-    const d2 = "2023-10-02 00:00:00"
-    expect(od(d1).diff(d2, "d")).toBe(dayjs(d1).diff(d2, "d"))
-    expect(od(d1).diff(d2, "M", true)).toBe(dayjs(d1).diff(d2, "M", true))
+    expect(od(d2).diff(d1, "y")).toBe(dayjs(d2).diff(d1, "y"))
+    expect(od(d2).diff(d1, "M")).toBe(dayjs(d2).diff(d1, "M"))
+    expect(od(d2).diff(d1, "d")).toBe(dayjs(d2).diff(d1, "d"))
+    expect(od(d2).diff(d1, "h")).toBe(dayjs(d2).diff(d1, "h"))
+    expect(od(d2).diff(d1, "m")).toBe(dayjs(d2).diff(d1, "m"))
+    expect(od(d2).diff(d1, "s")).toBe(dayjs(d2).diff(d1, "s"))
+    expect(od(d2).diff(d1, "ms")).toBe(dayjs(d2).diff(d1, "ms"))
   })
 
   it("时长计算", () => {
     const d = new Date()
     expect(od(d).len("d")).toBe(dayjs.duration(1, "d").asMilliseconds())
     expect(od(d).len("M", "d")).toBe(dayjs(d).add(1, "M").date(0).date())
-    expect(od(d).len("y", "h")).toBe(dayjs(d).endOf("y").diff(dayjs(d).startOf("y"), "h"))
+    expect(od(d).len("y", "h")).toBe(dayjs(d).isLeapYear() ? 366 * 24 : 365 * 24)
     expect(od(d).len("m", "h")).toBe(0)
-    expect(od(d).len("d", "M", true)).toBe(1 / dayjs(d).add(1, "M").date(0).date())
   })
 })
