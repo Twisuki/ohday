@@ -13,11 +13,14 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "check": "tsc --noEmit"
   },
   "devDependencies": {
+    "tsup": "^8.5.1",
     "typescript": "^6.0.0"
   }
 }

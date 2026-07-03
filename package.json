@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "eslint",
     "fix": "eslint . --fix",
-    "check:packages": "pnpm --filter packages run check",
-    "check": "pnpm check:packages"
+    "check:ohday": "pnpm --filter ohday run check",
+    "check": "pnpm check:ohday"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.1.0",
