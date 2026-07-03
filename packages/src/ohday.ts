@@ -1,8 +1,8 @@
 import type { OhDayFlag } from "./const"
 import type { OhDayLike } from "./format"
-import { DEFAULT_FORMAT, FLAG_DATE, FLAG_MONTH, FLAG_MS, MS_A_DAY, MS_A_HOUR, MS_A_MINUTE, MS_A_SECOND } from "./const"
+import { DEFAULT_FORMAT, FLAG_DATE, FLAG_MONTH, FLAG_MS, FLAG_YEAR, MS_A_DAY, MS_A_HOUR, MS_A_MINUTE, MS_A_SECOND } from "./const"
 import { formatDate, parseInput } from "./format"
-import { changeUnit, daysOfMonth, flag, getFlagByIndex, getFlagIndex, isLeapYear } from "./util"
+import { daysOfMonth, flag, getFlagByIndex, getFlagIndex, isLeapYear } from "./util"
 
 export { OhDayFlag } from "./const"
 export { OhDayLike } from "./format"
@@ -169,6 +169,7 @@ export class OhDay {
   // region 操作
   /**
    * @description 修改当前 OhDay 实例的指定时间单位的值, 返回一个新的 OhDay 实例
+   *   - 当出现日期溢出时, 会自动调整为该月的最后一天
    * @param scope 被修改的时间单位
    * @param value 新的时间值
    * @example
@@ -178,7 +179,22 @@ export class OhDay {
    * ```
    */
   c(scope: OhDayFlag, value: number): OhDay {
-    return new OhDay(changeUnit(this.$d, scope, value))
+    const d = new Date(this.$d)
+    const date = d.getDate()
+    flag(scope, [
+      () => d.setFullYear(value),
+      () => d.setMonth(value - 1),
+      () => d.setDate(value),
+      () => d.setHours(value),
+      () => d.setMinutes(value),
+      () => d.setSeconds(value),
+      () => d.setMilliseconds(value),
+    ], () => {})()
+
+    if ((scope === FLAG_YEAR || scope === FLAG_MONTH) && d.getDate() !== date) {
+      d.setDate(0)
+    }
+    return new OhDay(d)
   }
 
   /**
@@ -233,6 +249,7 @@ export class OhDay {
   // region 计算
   /**
    * @description 在当前 OhDay 实例的指定时间单位上增加指定的偏移量, 返回一个新的 OhDay 实例
+   *   - 当出现日期溢出时, 会自动调整为该月的最后一天
    * @param scope 被修改的时间单位
    * @param offset 偏移量, 可以为正数或负数
    * @example
@@ -242,19 +259,12 @@ export class OhDay {
    * ```
    */
   add(scope: OhDayFlag, offset: number): OhDay {
-    return this.c(scope, flag(scope, [
-      this.year + offset,
-      this.month + offset,
-      this.ts + offset * MS_A_DAY,
-      this.ts + offset * MS_A_HOUR,
-      this.ts + offset * MS_A_MINUTE,
-      this.ts + offset * MS_A_SECOND,
-      this.ts + offset,
-    ], 0))
+    return this.c(scope, this.getValueByScope(scope) + offset)
   }
 
   /**
    * @description 在当前 OhDay 实例的指定时间单位上减少指定的偏移量, 返回一个新的 OhDay 实例
+   *   - 当出现日期溢出时, 会自动调整为该月的最后一天
    * @param scope 被修改的时间单位
    * @param offset 偏移量, 可以为正数或负数
    * @example
@@ -281,7 +291,7 @@ export class OhDay {
   diff(target: OhDayLike, unit?: OhDayFlag, float?: boolean): number {
     const thatDate = parseInput(target)
     const that = new OhDay(thatDate)
-    const diffMs = this.ms - that.ms
+    const diffMs = this.ts - that.ts
 
     return flag(unit ?? FLAG_MS, [
       float ? diffMs / MS_A_DAY / (isLeapYear(this.year) ? 366 : 365) : this.year - that.year,
@@ -383,8 +393,9 @@ export class OhDay {
 
   /**
    * @description 判断当前 OhDay 实例是否在两个目标时间之间, 返回一个布尔值
-   * @param target1 比较范围的起始时间, 支持多种类型的解析, 比较范围包含该时间
-   * @param target2 比较范围的结束时间, 支持多种类型的解析, 比较范围不包含该时间
+   *   - 默认比较范围为左闭右开区间, 即 [target1, target2)
+   * @param target1 比较范围的起始时间, 支持多种类型的解析
+   * @param target2 比较范围的结束时间, 支持多种类型的解析
    * @param scope 比较的时间单位, 默认为毫秒
    * @example
    * ```ts

@@ -25,24 +25,3 @@ export function daysOfMonth(year: number, month: number): number {
 export function isLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
 }
-
-export function changeUnit(date: Date, scope: OhDayFlag, value?: number): Date {
-  if (value === undefined)
-    return date
-
-  const d = new Date(date)
-  const ms = d.getMilliseconds()
-
-  flag(scope, [
-    d.setFullYear(value),
-    d.setMonth(value - 1),
-    d.setDate(value),
-    d.setHours(value),
-    d.setMinutes(value),
-    d.setSeconds(value),
-    d.setMilliseconds(value),
-  ], 0)
-
-  d.setMilliseconds(ms)
-  return d
-}
