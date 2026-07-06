@@ -21,12 +21,13 @@
   "scripts": {
     "check": "tsc --noEmit",
     "build": "pnpm -w lint && pnpm check && pnpm test:run && tsup",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:run": "vitest run"
+    "test": "cross-env TZ=Asia/Shanghai vitest",
+    "test:ui": "pnpm test --ui",
+    "test:run": "pnpm test run"
   },
   "devDependencies": {
     "@vitest/ui": "^4.1.9",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.21",
     "tsup": "^8.5.1",
     "typescript": "^6.0.0",

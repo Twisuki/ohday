@@ -4,3 +4,5 @@ trustPolicy: no-downgrade
 
 packages:
   - packages
+overrides:
+  chokidar: 5.0.0

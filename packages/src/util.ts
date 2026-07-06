@@ -40,3 +40,10 @@ export function daysOfMonth(year: number, month: number): number {
     return 29
   return DAY_OF_MONTH[month - 1]
 }
+
+/**
+ * @description 转义正则表达式特殊字符
+ */
+export function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}

@@ -21,6 +21,7 @@ import {
   REGEX_TIME_SEP,
 } from "./const"
 import { OhDay } from "./ohday"
+import { escapeRegExp } from "./util"
 
 /**
  * @description 可接受的时间输入类型, 包括 Date 对象, OhDay 对象, 字符串, 时间戳, 时间数组和时间对象
@@ -34,13 +35,6 @@ export type OhDayLike = Date | OhDay | string | number | number[] | {
   minute?: number
   second?: number
   ms?: number
-}
-
-/**
- * @description 转义正则表达式特殊字符
- */
-function escapeRegExp(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
 /**
@@ -102,7 +96,7 @@ export function parseString(input: string, format?: string): Date | null {
     return null
 
   if (hasDateSep && hasTimeSep) {
-    const [datePart, timePart] = input.split(/\s+/)
+    const [datePart, timePart] = input.replace("T", " ").split(/\s+/)
     const dateNums = datePart.match(REGEX_DIGITS) ?? []
     const timeNums = timePart.match(REGEX_DIGITS) ?? []
     return complete(
