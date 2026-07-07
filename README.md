@@ -188,3 +188,7 @@ The `OhDayFlag` type defines time units used across API methods:
 "s"  // second
 "ms" // millisecond
 ```
+
+## License
+
+ohday is licensed under a [MIT License](./LICENSE).
