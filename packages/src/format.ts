@@ -42,28 +42,34 @@ export type OhDayLike = Date | OhDay | string | number | number[] | {
  *   - 默认支持格式有: -分割的日期, /分割的日期, :分割的时间, 空格分割的日期和时间, .分割的毫秒
  */
 export function parseString(input: string, format?: string): Date | null {
+  // 判断是否传入格式化字符串
   if (format) {
     let pattern = "^"
     const fields: string[] = []
     let i = 0
 
+    // 逐个匹配预定义token
     while (i < format.length) {
       let matched = false
       for (const [token, regexPart] of Object.entries(FORMAT_TOKEN_REGEX_MAP)) {
         if (format.startsWith(token, i)) {
           pattern += regexPart
           fields.push(FORMAT_TOKEN_KEY_MAP[token])
+
           i += token.length
           matched = true
           break
         }
       }
+
+      // 不匹配则转义特殊字符
       if (!matched) {
         pattern += escapeRegExp(format[i])
         i++
       }
     }
 
+    // 将合成的正则表达式进行匹配判断
     pattern += "$"
     const regex = new RegExp(pattern)
     const match = input.match(regex)
@@ -72,6 +78,7 @@ export function parseString(input: string, format?: string): Date | null {
 
     const values: (number | undefined)[] = Array.from({ length: OBJECT_KEYS.length })
 
+    // 一点一点从input里面抽数字出来
     for (let idx = 0; idx < fields.length; idx++) {
       const fieldName = fields[idx] as typeof OBJECT_KEYS[number]
       const valueStr = match[idx + 1]
@@ -88,47 +95,53 @@ export function parseString(input: string, format?: string): Date | null {
 
     return complete(...values as [number | undefined, number | undefined, number | undefined, number | undefined, number | undefined, number | undefined, number | undefined])
   }
+  else {
+    // 是否包含日期
+    const hasDateSep = REGEX_DATE_SEP.test(input)
+    // 是否包含时间
+    const hasTimeSep = REGEX_TIME_SEP.test(input)
 
-  const hasDateSep = REGEX_DATE_SEP.test(input)
-  const hasTimeSep = REGEX_TIME_SEP.test(input)
+    if (!hasDateSep && !hasTimeSep) {
+      return null
+    }
+    else if (hasDateSep && hasTimeSep) {
+      // 拆分日期部分和时间部分
+      const [datePart, timePart] = input.replace("T", " ").split(/\s+/)
+      const dateNums = datePart.match(REGEX_DIGITS) ?? []
+      const timeNums = timePart.match(REGEX_DIGITS) ?? []
 
-  if (!hasDateSep && !hasTimeSep)
-    return null
-
-  if (hasDateSep && hasTimeSep) {
-    const [datePart, timePart] = input.replace("T", " ").split(/\s+/)
-    const dateNums = datePart.match(REGEX_DIGITS) ?? []
-    const timeNums = timePart.match(REGEX_DIGITS) ?? []
-    return complete(
-      Number(dateNums[0]),
-      Number(dateNums[1]),
-      Number(dateNums[2]),
-      Number(timeNums[0]),
-      Number(timeNums[1]),
-      Number(timeNums[2]),
-      timeNums[3] ? Number(timeNums[3]) : undefined,
-    )
+      return complete(
+        Number(dateNums[0]),
+        Number(dateNums[1]),
+        Number(dateNums[2]),
+        Number(timeNums[0]),
+        Number(timeNums[1]),
+        Number(timeNums[2]),
+        timeNums[3] ? Number(timeNums[3]) : undefined,
+      )
+    }
+    else if (hasDateSep && !hasTimeSep) {
+      const nums = input.match(REGEX_DIGITS) ?? []
+      return complete(
+        Number(nums[0]),
+        Number(nums[1]),
+        Number(nums[2]),
+      )
+    }
+    else {
+      // 条件满足：!hasDateSep && hasTimeSep
+      const nums = input.match(REGEX_DIGITS) ?? []
+      return complete(
+        undefined,
+        undefined,
+        undefined,
+        Number(nums[0]),
+        Number(nums[1]),
+        Number(nums[2]),
+        nums[3] ? Number(nums[3]) : undefined,
+      )
+    }
   }
-
-  if (hasDateSep) {
-    const nums = input.match(REGEX_DIGITS) ?? []
-    return complete(
-      Number(nums[0]),
-      Number(nums[1]),
-      Number(nums[2]),
-    )
-  }
-
-  const nums = input.match(REGEX_DIGITS) ?? []
-  return complete(
-    undefined,
-    undefined,
-    undefined,
-    Number(nums[0]),
-    Number(nums[1]),
-    Number(nums[2]),
-    nums[3] ? Number(nums[3]) : undefined,
-  )
 }
 
 /**
