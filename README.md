@@ -180,12 +180,12 @@ d.pd("M") // Date("2026-06-01T00:00:00.000+08:00") (start of month)
 The `OhDayFlag` type defines time units used across API methods:
 
 ```ts
-"y"  // year
-"M"  // month
-"d"  // day
-"h"  // hour
-"m"  // minute
-"s"  // second
+"y" // year
+"M" // month
+"d" // day
+"h" // hour
+"m" // minute
+"s" // second
 "ms" // millisecond
 ```
 
