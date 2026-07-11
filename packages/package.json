@@ -1,12 +1,13 @@
 {
   "name": "@twisuki/ohday",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Chainable, immutable, lightweight date/time processing library",
   "author": "Twisuki",
   "publishConfig": {
     "access": "public"
   },
   "license": "MIT",
+  "readme": "README.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/Twisuki/ohday"
