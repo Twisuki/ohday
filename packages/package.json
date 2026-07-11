@@ -33,8 +33,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "../LICENSE",
-    "../README.md",
+    "LICENSE",
+    "README.md",
     "dist"
   ],
   "scripts": {
@@ -43,7 +43,13 @@
     "test": "cross-env TZ=Asia/Shanghai vitest",
     "test:ui": "pnpm test --ui",
     "test:run": "pnpm test run",
-    "prepack": "pnpm build"
+    "copy:readme": "node -e \"require('fs').copyFileSync('../README.md', './README.md')\"",
+    "copy:license": "node -e \"require('fs').copyFileSync('../LICENSE', './LICENSE')\"",
+    "copy": "pnpm copy:readme && pnpm copy:license",
+    "remove:readme": "node -e \"const fs=require('fs');if(fs.existsSync('./README.md')) fs.unlinkSync('./README.md')\"",
+    "remove:license": "node -e \"const fs=require('fs');if(fs.existsSync('./LICENSE')) fs.unlinkSync('./LICENSE')\"",
+    "prepack": "pnpm build && pnpm copy",
+    "postpack": "pnpm remove:readme && pnpm remove:license"
   },
   "devDependencies": {
     "@vitest/ui": "^4.1.9",
