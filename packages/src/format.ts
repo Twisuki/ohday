@@ -48,7 +48,7 @@ export function parseString(input: string, format?: string): Date | null {
     const fields: string[] = []
     let i = 0
 
-    // 逐个匹配预定义token
+    // 逐个匹配预定义 token
     while (i < format.length) {
       let matched = false
       for (const [token, regexPart] of Object.entries(FORMAT_TOKEN_REGEX_MAP)) {
@@ -69,7 +69,7 @@ export function parseString(input: string, format?: string): Date | null {
       }
     }
 
-    // 将合成的正则表达式进行匹配判断
+    // 将合成的正则表达式进行匹配
     pattern += "$"
     const regex = new RegExp(pattern)
     const match = input.match(regex)
@@ -78,7 +78,7 @@ export function parseString(input: string, format?: string): Date | null {
 
     const values: (number | undefined)[] = Array.from({ length: OBJECT_KEYS.length })
 
-    // 一点一点从input里面抽数字出来
+    // 从 input 匹配各个字段
     for (let idx = 0; idx < fields.length; idx++) {
       const fieldName = fields[idx] as typeof OBJECT_KEYS[number]
       const valueStr = match[idx + 1]
