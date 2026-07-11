@@ -13,7 +13,9 @@ od().c("M", 2).add("d", 10).ps("MM/DD YYYY")
 
 ## Getting Started
 
-ohday is coming to npm soon. Stay tuned!
+```bash
+pnpm install @twisuki/ohday
+```
 
 ## API
 

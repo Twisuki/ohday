@@ -1,8 +1,25 @@
 {
-  "name": "ohday",
+  "name": "@twisuki/ohday",
   "version": "1.0.0",
   "description": "Chainable, immutable, lightweight date/time processing library",
   "author": "Twisuki",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Twisuki/ohday"
+  },
+  "bugs": "https://github.com/Twisuki/ohday/issues",
+  "keywords": [
+    "date",
+    "time",
+    "ohday",
+    "immutable",
+    "chainable",
+    "lightweight"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
@@ -16,6 +33,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
+    "../LICENSE",
+    "../README.md",
     "dist"
   ],
   "scripts": {
@@ -23,7 +42,8 @@
     "build": "pnpm -w lint && pnpm check && pnpm test:run && tsup",
     "test": "cross-env TZ=Asia/Shanghai vitest",
     "test:ui": "pnpm test --ui",
-    "test:run": "pnpm test run"
+    "test:run": "pnpm test run",
+    "prepack": "pnpm build"
   },
   "devDependencies": {
     "@vitest/ui": "^4.1.9",
