@@ -1,6 +1,6 @@
 {
   "name": "@twisuki/ohday",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Chainable, immutable, lightweight date/time processing library",
   "author": "Twisuki",
   "publishConfig": {
