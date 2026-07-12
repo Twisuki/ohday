@@ -1,6 +1,8 @@
-// region 时间 Flag
+import { raw } from "./util"
+
+// region Time Flags
 /**
- * @description 用于标记时间域或时间单位的 Flag 类型
+ * @description Flag type for marking time fields or units
  */
 export type OhDayFlag = "y" | "M" | "w" | "d" | "h" | "m" | "s" | "ms"
 
@@ -24,7 +26,7 @@ export const FLAGS = [
 ] as const
 // endregion
 
-// region 时间长度
+// region Time Lengths
 export const SECOND_A_MINUTE = 60
 export const SECOND_A_HOUR = SECOND_A_MINUTE * 60
 export const SECOND_A_DAY = SECOND_A_HOUR * 24
@@ -39,7 +41,7 @@ export const MS_A_WEEK = MS_A_DAY * 7
 export const DAY_OF_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] as const
 // endregion
 
-// region 时间 token 与对象键
+// region Format Tokens And Object Keys
 export const FORMAT_TOKEN_YYYY = "YYYY"
 export const FORMAT_TOKEN_YY = "YY"
 export const FORMAT_TOKEN_MM = "MM"
@@ -73,27 +75,32 @@ export const OBJECT_KEYS = [
 ] as const
 // endregion
 
-// region 时间格式化
+// region Date Formatting
 export const DEFAULT_FORMAT = "YYYY-MM-DD HH:mm:ss"
 
 export const REGEX_DIGITS = /\d+/g
 export const REGEX_DATE_SEP = /[-/]/
 export const REGEX_TIME_SEP = /:/
 
+const REGEX_DIGIT_4 = raw`(\d{4})`
+const REGEX_DIGIT_2 = raw`(\d{2})`
+const REGEX_DIGIT_3 = raw`(\d{3})`
+const REGEX_DIGIT_1_2 = raw`(\d{1,2})`
+
 export const FORMAT_TOKEN_REGEX_MAP: Record<string, string> = {
-  [FORMAT_TOKEN_YYYY]: String.raw`(\d{4})`,
-  [FORMAT_TOKEN_YY]: String.raw`(\d{2})`,
-  [FORMAT_TOKEN_SSS]: String.raw`(\d{3})`,
-  [FORMAT_TOKEN_MM]: String.raw`(\d{2})`,
-  [FORMAT_TOKEN_DD]: String.raw`(\d{2})`,
-  [FORMAT_TOKEN_HH]: String.raw`(\d{2})`,
-  [FORMAT_TOKEN_mm]: String.raw`(\d{2})`,
-  [FORMAT_TOKEN_ss]: String.raw`(\d{2})`,
-  [FORMAT_TOKEN_M]: String.raw`(\d{1,2})`,
-  [FORMAT_TOKEN_D]: String.raw`(\d{1,2})`,
-  [FORMAT_TOKEN_H]: String.raw`(\d{1,2})`,
-  [FORMAT_TOKEN_m]: String.raw`(\d{1,2})`,
-  [FORMAT_TOKEN_s]: String.raw`(\d{1,2})`,
+  [FORMAT_TOKEN_YYYY]: REGEX_DIGIT_4,
+  [FORMAT_TOKEN_YY]: REGEX_DIGIT_2,
+  [FORMAT_TOKEN_SSS]: REGEX_DIGIT_3,
+  [FORMAT_TOKEN_MM]: REGEX_DIGIT_2,
+  [FORMAT_TOKEN_DD]: REGEX_DIGIT_2,
+  [FORMAT_TOKEN_HH]: REGEX_DIGIT_2,
+  [FORMAT_TOKEN_mm]: REGEX_DIGIT_2,
+  [FORMAT_TOKEN_ss]: REGEX_DIGIT_2,
+  [FORMAT_TOKEN_M]: REGEX_DIGIT_1_2,
+  [FORMAT_TOKEN_D]: REGEX_DIGIT_1_2,
+  [FORMAT_TOKEN_H]: REGEX_DIGIT_1_2,
+  [FORMAT_TOKEN_m]: REGEX_DIGIT_1_2,
+  [FORMAT_TOKEN_s]: REGEX_DIGIT_1_2,
 }
 
 export const FORMAT_TOKEN_KEY_MAP: Record<string, string> = {

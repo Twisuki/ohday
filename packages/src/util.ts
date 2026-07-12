@@ -2,38 +2,38 @@ import type { OhDayFlag } from "./const"
 import { DAY_OF_MONTH, FLAG_DATE, FLAG_MS, FLAG_WEEK, FLAGS } from "./const"
 
 /**
- * @description 获取时间标签 Flag 的索引
+ * @description Get the index of a time flag in the FLAGS array
  */
 export function getFlagIndex(f: OhDayFlag): number {
   return FLAGS.indexOf(f === FLAG_WEEK ? FLAG_DATE : f)
 }
 
 /**
- * @description 根据索引获取时间标签 Flag
+ * @description Get the time flag by its index
  */
 export function getFlagByIndex(index: number): OhDayFlag {
   return FLAGS[index] ?? FLAG_MS
 }
 
 /**
- * @description 根据 Flag 获取对应的值
- * @param f 时间标签 Flag
- * @param cases 值数组
- * @param def 默认值
+ * @description Get the corresponding value by flag
+ * @param f - Time flag
+ * @param cases - Array of values
+ * @param def - Default value
  */
 export function flag<T>(f: OhDayFlag, cases: T[], def: T): T {
   return cases[getFlagIndex(f)] ?? def
 }
 
 /**
- * @description 判断是否为闰年
+ * @description Check if a year is a leap year
  */
 export function isLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
 }
 
 /**
- * @description 获取指定月份的天数
+ * @description Get the number of days in a month
  */
 export function daysOfMonth(year: number, month: number): number {
   if (month === 2 && isLeapYear(year))
@@ -42,15 +42,29 @@ export function daysOfMonth(year: number, month: number): number {
 }
 
 /**
- * @description 转义正则表达式特殊字符
+ * @description Escape special characters in a string for use in a RegExp
  */
 export function escapeRegExp(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
 /**
- * @description 将 week scope 映射为 date scope, 复用 date 精度路径
+ * @description Tagged template alias for String.raw
  */
-export function mapWeekFlag(scope?: OhDayFlag): OhDayFlag {
-  return scope === FLAG_WEEK ? FLAG_DATE : scope ?? FLAG_MS
+export const raw: typeof String.raw = String.raw
+
+/**
+ * @description Alias for Number — type coercion to number
+ */
+export const toNum = Number
+
+/**
+ * @description Pad a number with leading zeros to the specified length
+ * @param value - The number to pad
+ * @param length - Target string length (defaults to no padding)
+ */
+export function padStart(value: number, length?: number): string {
+  if (!length)
+    return String(value)
+  return String(value).padStart(length, "0")
 }

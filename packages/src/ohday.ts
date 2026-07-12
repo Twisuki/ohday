@@ -8,23 +8,23 @@ export { OhDayFlag } from "./const"
 export { OhDayLike } from "./format"
 
 /**
- * @description OhDay 类, 支持多种解析, 操作, 计算, 比较和输出方法, 用于处理日期和时间
+ * @description OhDay class, supports parsing, manipulation, calculation, comparison and output methods for date/time processing
  */
 export class OhDay {
   readonly $d: Date
 
   /**
-   * @description OhDay 构造函数, 用于创建一个新的 OhDay 实例
-   * @param input 可被 OhDay 直接解析的时间类型, 包括 Date 对象, 时间字符串, 时间戳, 数字数组以及时间对象
-   * @param format 可选的格式化字符串, 用于解析时间字符串
+   * @description OhDay constructor, creates a new OhDay instance
+   * @param input - Time input that can be parsed by OhDay, including Date, string, timestamp, number array and object
+   * @param format - Optional format string for parsing time string
    */
   constructor(input?: OhDayLike, format?: string) {
     this.$d = parseInput(input, format)
   }
 
-  // region 信息
+  // region Information
   /**
-   * @description 获取默认格式化字符串, 格式为 "YYYY-MM-DD HH:mm:ss"
+   * @description Get the default formatted string in "YYYY-MM-DD HH:mm:ss" format
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").s // "2023-10-01 12:30:45"
@@ -35,7 +35,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取 ISO 8601 格式化字符串, 格式为 "YYYY-MM-DDTHH:mm:ss.sssZ"
+   * @description Get the ISO 8601 formatted string in "YYYY-MM-DDTHH:mm:ss.sssZ" format
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").iso // "2023-10-01T04:30:45Z"
@@ -46,7 +46,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取时间戳, 单位为毫秒
+   * @description Get the timestamp in milliseconds
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").ts // 1696159845000
@@ -57,10 +57,10 @@ export class OhDay {
   }
 
   /**
-   * @description 获取 Date 对象
+   * @description Get the Date object
    * @example
    * ```ts
-   * od("2023-10-01 12:30:45").dd // Date对象
+   * od("2023-10-01 12:30:45").dd // Date object
    * ```
    */
   get dd(): Date {
@@ -68,7 +68,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取数字年份
+   * @description Get the year number
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").year // 2023
@@ -79,7 +79,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取数字月份, 范围为 1-12
+   * @description Get the month number, range 1-12
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").month // 10
@@ -90,7 +90,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取数字日期, 范围为 1-31
+   * @description Get the date number, range 1-31
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").date // 1
@@ -101,7 +101,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取数字星期, 范围为 0-6, 其中 0 表示星期日
+   * @description Get the day of week, range 0-6, where 0 represents Sunday
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").day // 0
@@ -112,7 +112,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取数字小时, 范围为 0-23
+   * @description Get the hour number, range 0-23
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").hour // 12
@@ -123,7 +123,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取数字分钟, 范围为 0-59
+   * @description Get the minute number, range 0-59
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").minute // 30
@@ -134,7 +134,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取数字秒, 范围为 0-59
+   * @description Get the second number, range 0-59
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").second // 45
@@ -145,7 +145,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取数字毫秒, 范围为 0-999
+   * @description Get the millisecond number, range 0-999
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").ms // 678
@@ -156,10 +156,10 @@ export class OhDay {
   }
 
   /**
-   * @description 获取当前 OhDay 实例的副本
+   * @description Get a clone of the current OhDay instance
    * @example
    * ```ts
-   * od("2023-10-01 12:30:45").od // OhDay实例
+   * od("2023-10-01 12:30:45").od // OhDay instance
    * ```
    */
   get od(): OhDay {
@@ -167,7 +167,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取指定时间域的值, 传入 w 返回星期 (0-6), 不传则返回毫秒时间戳
+   * @description Get the value of a specified time field. Returns day of week (0-6) for "w", returns timestamp if no argument
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").g("y") // 2023
@@ -190,15 +190,15 @@ export class OhDay {
   }
   // endregion
 
-  // region 操作
+  // region Manipulation
   /**
-   * @description 修改当前 OhDay 实例的指定时间域的值, 返回一个新的 OhDay 实例
-   *   - 当出现日期溢出时, 会自动调整为该月的最后一天
-   * @param scope 被修改的时间域
-   * @param value 新的时间值
+   * @description Change the value of a specified time field, returns a new OhDay instance
+   *   - When date overflow occurs, automatically adjusts to the last day of the month
+   * @param scope - The time field to modify
+   * @param value - The new time value
    * @example
    * ```ts
-   * // 修改年份为 2025
+   * // Change year to 2025
    * od("2023-10-01 12:30:45").c("y", 2025).s // "2025-10-01 12:30:45"
    * ```
    */
@@ -225,12 +225,12 @@ export class OhDay {
   }
 
   /**
-   * @description 修改当前 OhDay 实例到指定时间域指定值的初始时刻, 返回一个新的 OhDay 实例
-   * @param scope 被修改的时间域
-   * @param value 新的时间值, 默认使用当前时间值
+   * @description Change to the start of the specified time field with given value, returns a new OhDay instance
+   * @param scope - The time field to modify
+   * @param value - The new time value, defaults to current value
    * @example
    * ```ts
-   * // 修改至 2 月份的初始时刻
+   * // Change to the start of February
    * od("2023-10-01 12:30:45").cs("M", 2).s // "2023-02-01 00:00:00"
    * ```
    */
@@ -248,12 +248,12 @@ export class OhDay {
   }
 
   /**
-   * @description 修改当前 OhDay 实例到指定时间域指定值的结束时刻, 返回一个新的 OhDay 实例
-   * @param scope 被修改的时间域
-   * @param value 新的时间值, 默认使用当前时间值
+   * @description Change to the end of the specified time field with given value, returns a new OhDay instance
+   * @param scope - The time field to modify
+   * @param value - The new time value, defaults to current value
    * @example
    * ```ts
-   * // 修改至 2 月份的结束时刻
+   * // Change to the end of February
    * od("2023-10-01 12:30:45").ce("M", 2).s // "2023-02-28 23:59:59"
    * ```
    */
@@ -266,8 +266,8 @@ export class OhDay {
     for (let i = h + 1; i < 7; i++) {
       const s = getFlagByIndex(i)
       d = d.c(s, flag(s, [
-        9999, // 不会进入该分支
-        12, // 仅修改年份时, 才会进入该分支
+        9999, // never reaches this branch
+        12, // only reaches this branch when modifying year
         daysOfMonth(d.year, d.month),
         23,
         59,
@@ -279,15 +279,15 @@ export class OhDay {
   }
   // endregion
 
-  // region 计算
+  // region Calculation
   /**
-   * @description 在当前 OhDay 实例的指定时间域上增加指定的偏移量, 返回一个新的 OhDay 实例
-   *   - 当出现日期溢出时, 会自动调整为该月的最后一天
-   * @param scope 要增加的时间域
-   * @param offset 偏移量, 可以为正数或负数
+   * @description Add an offset to the specified time field, returns a new OhDay instance
+   *   - When date overflow occurs, automatically adjusts to the last day of the month
+   * @param scope - The time field to modify
+   * @param offset - The offset amount, can be positive or negative
    * @example
    * ```ts
-   * // 在当前时间的年份上增加 1 年
+   * // Add 1 year to the current time
    * od("2023-10-01 12:30:45").add("y", 1).s // "2024-10-01 12:30:45"
    * ```
    */
@@ -298,13 +298,13 @@ export class OhDay {
   }
 
   /**
-   * @description 在当前 OhDay 实例的指定时间域上减少指定的偏移量, 返回一个新的 OhDay 实例
-   *   - 当出现日期溢出时, 会自动调整为该月的最后一天
-   * @param scope 要减少的时间域
-   * @param offset 偏移量, 可以为正数或负数
+   * @description Subtract an offset from the specified time field, returns a new OhDay instance
+   *   - When date overflow occurs, automatically adjusts to the last day of the month
+   * @param scope - The time field to modify
+   * @param offset - The offset amount, can be positive or negative
    * @example
    * ```ts
-   * // 在当前时间的年份上减少 1 年
+   * // Subtract 1 year from the current time
    * od("2023-10-01 12:30:45").sub("y", 1).s // "2022-10-01 12:30:45"
    * ```
    */
@@ -313,13 +313,13 @@ export class OhDay {
   }
 
   /**
-   * @description 计算当前 OhDay 实例与目标时间的差值, 返回一个数字, 单位为指定的时间单位
-   * @param target 目标时间, 支持多种类型的解析
-   * @param unit 返回值的时间单位, 默认为毫秒
-   * @param float 是否返回浮点数, 默认为 false
+   * @description Calculate the difference between the current and target time, returns a number in the specified unit
+   * @param target - Target time, supports multiple input types
+   * @param unit - The return value unit, defaults to millisecond
+   * @param float - Whether to return a float value, defaults to false
    * @example
    * ```ts
-   * // 计算当前时间与目标时间的差值, 单位为天
+   * // Calculate the difference in days
    * od("2023-10-01 12:30:45").diff("2022-10-01 12:30:45", "d") // 365
    * ```
    */
@@ -335,10 +335,10 @@ export class OhDay {
       return float ? diffMs / MS_A_WEEK : Math.trunc(diffMs / MS_A_WEEK)
 
     return flag(unit ?? FLAG_MS, [
-      // 当且仅当毫秒差值和年份差值同号时需要修正, 修正方向为正数 - 1, 负数 + 1
+      // Correct when ms diff and year diff share the same sign: subtract 1 for positive, add 1 for negative
       float ? diffMs / (MS_A_DAY * DAY_A_YEAR) : diffYears + (diffMs * (that.add("y", diffYears).ts - this.ts) > 0 ? diffMs > 0 ? -1 : 1 : 0),
       float ? diffMs / (MS_A_DAY * DAY_A_MONTH) : diffMonths + (diffMs * (that.add("M", diffMonths).ts - this.ts) > 0 ? diffMs > 0 ? -1 : 1 : 0),
-      // 为了正负都正常处理, 使用向 0 取整
+      // Use truncation toward zero to handle both positive and negative correctly
       float ? diffMs / MS_A_DAY : Math.trunc(diffMs / MS_A_DAY),
       float ? diffMs / MS_A_HOUR : Math.trunc(diffMs / MS_A_HOUR),
       float ? diffMs / MS_A_MINUTE : Math.trunc(diffMs / MS_A_MINUTE),
@@ -348,13 +348,13 @@ export class OhDay {
   }
 
   /**
-   * @description 计算当前 OhDay 实例在指定时间域上的长度, 返回一个数字, 单位为指定的时间单位
-   * @param scope 指定的时间域
-   * @param unit 返回值的时间单位
-   * @param float 是否返回浮点数, 默认为 false
+   * @description Calculate the length of a specified time field in the given unit, returns a number
+   * @param scope - The time field
+   * @param unit - The return value unit
+   * @param float - Whether to return a float value, defaults to false
    * @example
    * ```ts
-   * // 计算当前时间在指定时间单位上的长度, 单位为天
+   * // Calculate the length of a month in days
    * od("2023-10-01 12:30:45").len("M", "d") // 31
    * ```
    */
@@ -365,14 +365,14 @@ export class OhDay {
   }
   // endregion
 
-  // region 比较
+  // region Comparison
   /**
-   * @description 比较当前 OhDay 实例与目标时间在指定时间域上是否相等, 返回一个布尔值
-   * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间域, 默认为毫秒
+   * @description Check if the current time equals the target time in the specified field
+   * @param target - Target time, supports multiple input types
+   * @param scope - The comparison field, defaults to millisecond
    * @example
    * ```ts
-   * // 按天比较当前时间与目标时间是否相等
+   * // Compare by day
    * od("2023-10-01 12:30:45").eq("2023-10-01 00:00:00", "d") // true
    * ```
    */
@@ -381,12 +381,12 @@ export class OhDay {
   }
 
   /**
-   * @description 比较当前 OhDay 实例在指定时间域上是否小于目标时间, 返回一个布尔值
-   * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间域, 默认为毫秒
+   * @description Check if the current time is less than the target time in the specified field
+   * @param target - Target time, supports multiple input types
+   * @param scope - The comparison field, defaults to millisecond
    * @example
    * ```ts
-   * // 按天比较当前时间是否小于目标时间
+   * // Compare by day
    * od("2023-10-01 12:30:45").lt("2023-10-02 00:00:00", "d") // true
    * ```
    */
@@ -395,12 +395,12 @@ export class OhDay {
   }
 
   /**
-   * @description 比较当前 OhDay 实例在指定时间域上是否大于目标时间, 返回一个布尔值
-   * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间域, 默认为毫秒
+   * @description Check if the current time is greater than the target time in the specified field
+   * @param target - Target time, supports multiple input types
+   * @param scope - The comparison field, defaults to millisecond
    * @example
    * ```ts
-   * // 按天比较当前时间是否大于目标时间
+   * // Compare by day
    * od("2023-10-01 12:30:45").gt("2034-09-30 00:00:00", "d") // true
    * ```
    */
@@ -409,12 +409,12 @@ export class OhDay {
   }
 
   /**
-   * @description 比较当前 OhDay 实例在指定时间域上是否小于等于目标时间, 返回一个布尔值
-   * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间域, 默认为毫秒
+   * @description Check if the current time is less than or equal to the target time in the specified field
+   * @param target - Target time, supports multiple input types
+   * @param scope - The comparison field, defaults to millisecond
    * @example
    * ```ts
-   * // 按天比较当前时间是否小于等于目标时间
+   * // Compare by day
    * od("2023-10-01 12:30:45").le("2023-10-02 00:00:00", "d") // true
    * ```
    */
@@ -423,12 +423,12 @@ export class OhDay {
   }
 
   /**
-   * @description 比较当前 OhDay 实例在指定时间域上是否大于等于目标时间, 返回一个布尔值
-   * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间域, 默认为毫秒
+   * @description Check if the current time is greater than or equal to the target time in the specified field
+   * @param target - Target time, supports multiple input types
+   * @param scope - The comparison field, defaults to millisecond
    * @example
    * ```ts
-   * // 按天比较当前时间是否大于等于目标时间
+   * // Compare by day
    * od("2026-01-02 12:00:00").ge("2026-01-01 00:00:00", "d") // true
    * ```
    */
@@ -437,14 +437,14 @@ export class OhDay {
   }
 
   /**
-   * @description 判断当前 OhDay 实例是否在两个目标时间之间, 返回一个布尔值
-   *   - 默认比较范围为左闭右开区间, 即 [target1, target2)
-   * @param target1 比较范围的起始时间, 支持多种类型的解析
-   * @param target2 比较范围的结束时间, 支持多种类型的解析
-   * @param scope 比较的时间域, 默认为毫秒
+   * @description Check if the current time is between two target times, returns a boolean
+   *   - Default comparison range is [target1, target2)
+   * @param target1 - Start of the comparison range, supports multiple input types
+   * @param target2 - End of the comparison range, supports multiple input types
+   * @param scope - The comparison field, defaults to millisecond
    * @example
    * ```ts
-   * // 按天判断当前时间是否在两个目标时间之间
+   * // Check if current time is between two dates by day
    * od("2023-10-01 12:30:45").bt("2023-09-30 00:00:00", "2023-10-02 00:00:00", "d") // true
    * ```
    */
@@ -453,13 +453,13 @@ export class OhDay {
   }
   // endregion
 
-  // region 输出
+  // region Output
   /**
-   * @description 将当前 OhDay 实例格式化为指定格式的字符串, 返回一个字符串
-   * @param format 输出字符串的格式, 默认为 "YYYY-MM-DD HH:mm:ss"
+   * @description Format the current OhDay instance as a string in the specified format
+   * @param format - The output format string, defaults to "YYYY-MM-DD HH:mm:ss"
    * @example
    * ```ts
-   * // 将当前时间格式化为 "YYYY/MM/DD" 格式的字符串
+   * // Format current time as "YYYY/MM/DD"
    * od("2023-10-01 12:30:45").p("YYYY/MM/DD") // "2023/10/01"
    * ```
    */
@@ -468,11 +468,11 @@ export class OhDay {
   }
 
   /**
-   * @description 将当前 OhDay 实例的按精度输出为数组, 返回一个数字数组
-   * @param scope 输出的精度范围, 默认为毫秒
+   * @description Print the current OhDay instance as an array at the specified precision
+   * @param scope - The output precision, defaults to millisecond
    * @example
    * ```ts
-   * // 将当前时间以天为精度输出为数组
+   * // Print current time at day precision
    * od("2023-10-01 12:30:45").pa("d") // [2023, 10, 1]
    * ```
    */
@@ -487,11 +487,11 @@ export class OhDay {
   }
 
   /**
-   * @description 将当前 OhDay 实例的按精度输出为对象, 返回一个键值对对象
-   * @param scope 输出的精度范围, 默认为毫秒
+   * @description Print the current OhDay instance as an object at the specified precision
+   * @param scope - The output precision, defaults to millisecond
    * @example
    * ```ts
-   * // 将当前时间以天为精度输出为对象
+   * // Print current time at day precision
    * od("2023-10-01 12:30:45").po("d") // { year: 2023, month: 10, date: 1 }
    * ```
    */
@@ -515,12 +515,12 @@ export class OhDay {
   }
 
   /**
-   * @description 将当前 OhDay 实例的按精度输出为 Date 对象, 返回一个 Date 对象
-   * @param scope 输出的精度范围, 默认为毫秒
+   * @description Print the current OhDay instance as a Date object at the specified precision
+   * @param scope - The output precision, defaults to millisecond
    * @example
    * ```ts
-   * // 将当前时间以天为精度输出为 Date 对象
-   * od("2023-10-01 12:30:45").pd("d") // Date对象
+   * // Print current time at day precision as Date object
+   * od("2023-10-01 12:30:45").pd("d") // Date object
    * ```
    */
   pd(scope?: OhDayFlag): Date {
@@ -531,13 +531,13 @@ export class OhDay {
 }
 
 /**
- * @description 创建一个新的 OhDay 实例的工厂函数
- * @param input 可被 OhDay 直接解析的时间类型, 包括 Date 对象, 时间字符串, 时间戳, 数字数组以及时间对象
- * @param format 可选的格式化字符串, 用于解析时间字符串
+ * @description Factory function to create a new OhDay instance
+ * @param input - Time input that can be parsed by OhDay, including Date, string, timestamp, number array and object
+ * @param format - Optional format string for parsing time string
  * @example
  * ```ts
- * // 创建一个新的 OhDay 实例
- * od("2023-10-01 12:30:45") // OhDay实例
+ * // Create a new OhDay instance
+ * od("2023-10-01 12:30:45") // OhDay instance
  * ```
  */
 export const od = (input?: OhDayLike, format?: string): OhDay => new OhDay(input, format)
