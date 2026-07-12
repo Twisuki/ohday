@@ -1,11 +1,11 @@
 import type { OhDayFlag } from "./const"
-import { DAY_OF_MONTH, FLAG_MS, FLAGS } from "./const"
+import { DAY_OF_MONTH, FLAG_DATE, FLAG_MS, FLAG_WEEK, FLAGS } from "./const"
 
 /**
  * @description 获取时间单位 Flag 的索引
  */
 export function getFlagIndex(f: OhDayFlag): number {
-  return FLAGS.indexOf(f)
+  return FLAGS.indexOf(f === FLAG_WEEK ? FLAG_DATE : f)
 }
 
 /**
@@ -46,4 +46,11 @@ export function daysOfMonth(year: number, month: number): number {
  */
 export function escapeRegExp(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+/**
+ * @description 将 week scope 映射为 date scope, 复用 date 精度路径
+ */
+export function mapWeekFlag(scope?: OhDayFlag): OhDayFlag {
+  return scope === FLAG_WEEK ? FLAG_DATE : scope ?? FLAG_MS
 }

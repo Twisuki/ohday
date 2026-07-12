@@ -1,6 +1,6 @@
 import type { OhDayFlag } from "./const"
 import type { OhDayLike } from "./format"
-import { DAY_A_MONTH, DAY_A_YEAR, DEFAULT_FORMAT, FLAG_DATE, FLAG_MONTH, FLAG_MS, FLAG_YEAR, MS_A_DAY, MS_A_HOUR, MS_A_MINUTE, MS_A_SECOND, OBJECT_KEY_DATE, OBJECT_KEY_HOUR, OBJECT_KEY_MINUTE, OBJECT_KEY_MONTH, OBJECT_KEY_MS, OBJECT_KEY_SECOND, OBJECT_KEY_YEAR } from "./const"
+import { DAY_A_MONTH, DAY_A_YEAR, DEFAULT_FORMAT, FLAG_DATE, FLAG_MONTH, FLAG_MS, FLAG_WEEK, FLAG_YEAR, MS_A_DAY, MS_A_HOUR, MS_A_MINUTE, MS_A_SECOND, MS_A_WEEK, OBJECT_KEY_DATE, OBJECT_KEY_HOUR, OBJECT_KEY_MINUTE, OBJECT_KEY_MONTH, OBJECT_KEY_MS, OBJECT_KEY_SECOND, OBJECT_KEY_YEAR } from "./const"
 import { formatDate, parseInput } from "./format"
 import { daysOfMonth, flag, getFlagByIndex, getFlagIndex } from "./util"
 
@@ -165,6 +165,29 @@ export class OhDay {
   get od(): OhDay {
     return new OhDay(this)
   }
+
+  /**
+   * @description 获取指定时间单位的值, 传入 w 返回星期 (0-6), 不传则返回毫秒时间戳
+   * @example
+   * ```ts
+   * od("2023-10-01 12:30:45").g("y") // 2023
+   * ```
+   */
+  g(scope?: OhDayFlag): number {
+    return scope === undefined
+      ? this.ts
+      : scope === FLAG_WEEK
+        ? this.day
+        : flag(scope, [
+            this.year,
+            this.month,
+            this.date,
+            this.hour,
+            this.minute,
+            this.second,
+            this.ms,
+          ], this.ms)
+  }
   // endregion
 
   // region 操作
@@ -181,6 +204,9 @@ export class OhDay {
    */
   c(scope: OhDayFlag, value: number): OhDay {
     const d = new Date(this.$d)
+    if (scope === FLAG_WEEK)
+      return this.c("d", this.date + (value - this.day))
+
     const date = d.getDate()
     flag(scope, [
       () => d.setFullYear(value),
@@ -209,6 +235,9 @@ export class OhDay {
    * ```
    */
   cs(scope: OhDayFlag, value?: number): OhDay {
+    if (scope === FLAG_WEEK)
+      return this.c("w", value ?? 0).cs("d")
+
     let d = value ? this.c(scope, value) : this
     const h = getFlagIndex(scope)
     for (let i = h + 1; i < 7; i++) {
@@ -229,6 +258,9 @@ export class OhDay {
    * ```
    */
   ce(scope: OhDayFlag, value?: number): OhDay {
+    if (scope === FLAG_WEEK)
+      return this.c("w", value ?? 6).ce("d")
+
     let d = value ? this.c(scope, value) : this
     const h = getFlagIndex(scope)
     for (let i = h + 1; i < 7; i++) {
@@ -260,7 +292,9 @@ export class OhDay {
    * ```
    */
   add(scope: OhDayFlag, offset: number): OhDay {
-    return this.c(scope, this.getValueByScope(scope) + offset)
+    if (scope === FLAG_WEEK)
+      return this.add("d", offset * 7)
+    return this.c(scope, this.g(scope) + offset)
   }
 
   /**
@@ -296,6 +330,9 @@ export class OhDay {
 
     const diffYears = this.year - that.year
     const diffMonths = (this.year - that.year) * 12 + (this.month - that.month)
+
+    if (unit === FLAG_WEEK)
+      return float ? diffMs / MS_A_WEEK : Math.trunc(diffMs / MS_A_WEEK)
 
     return flag(unit ?? FLAG_MS, [
       // 当且仅当毫秒差值和年份差值同号时需要修正, 修正方向为正数 - 1, 负数 + 1
@@ -444,7 +481,7 @@ export class OhDay {
     const l = getFlagIndex(scope ?? FLAG_MS)
     for (let i = 0; i <= l; i++) {
       const s = getFlagByIndex(i)
-      arr.push(this.getValueByScope(s))
+      arr.push(this.g(s))
     }
     return arr
   }
@@ -472,7 +509,7 @@ export class OhDay {
         OBJECT_KEY_SECOND,
         OBJECT_KEY_MS,
       ] as const)[i]
-      obj = { ...obj, [key]: this.getValueByScope(s) }
+      obj = { ...obj, [key]: this.g(s) }
     }
     return obj
   }
@@ -491,18 +528,6 @@ export class OhDay {
     return parseInput(arr)
   }
   // endregion
-
-  private getValueByScope(scope?: OhDayFlag): number {
-    return flag(scope ?? FLAG_MS, [
-      this.year,
-      this.month,
-      this.date,
-      this.hour,
-      this.minute,
-      this.second,
-      this.ms,
-    ], this.ms)
-  }
 }
 
 /**
