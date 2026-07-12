@@ -1,6 +1,6 @@
 // region 时间 Flag
 /**
- * @description 用于标记时间单位的 Flag 类型
+ * @description 用于标记时间域或时间单位的 Flag 类型
  */
 export type OhDayFlag = "y" | "M" | "w" | "d" | "h" | "m" | "s" | "ms"
 

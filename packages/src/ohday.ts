@@ -167,7 +167,7 @@ export class OhDay {
   }
 
   /**
-   * @description 获取指定时间单位的值, 传入 w 返回星期 (0-6), 不传则返回毫秒时间戳
+   * @description 获取指定时间域的值, 传入 w 返回星期 (0-6), 不传则返回毫秒时间戳
    * @example
    * ```ts
    * od("2023-10-01 12:30:45").g("y") // 2023
@@ -192,9 +192,9 @@ export class OhDay {
 
   // region 操作
   /**
-   * @description 修改当前 OhDay 实例的指定时间单位的值, 返回一个新的 OhDay 实例
+   * @description 修改当前 OhDay 实例的指定时间域的值, 返回一个新的 OhDay 实例
    *   - 当出现日期溢出时, 会自动调整为该月的最后一天
-   * @param scope 被修改的时间单位
+   * @param scope 被修改的时间域
    * @param value 新的时间值
    * @example
    * ```ts
@@ -225,8 +225,8 @@ export class OhDay {
   }
 
   /**
-   * @description 修改当前 OhDay 示例到指定单位指定值的初始时刻, 返回一个新的 OhDay 实例
-   * @param scope 被修改的时间单位
+   * @description 修改当前 OhDay 实例到指定时间域指定值的初始时刻, 返回一个新的 OhDay 实例
+   * @param scope 被修改的时间域
    * @param value 新的时间值, 默认使用当前时间值
    * @example
    * ```ts
@@ -248,8 +248,8 @@ export class OhDay {
   }
 
   /**
-   * @description 修改当前 OhDay 示例到指定单位指定值的结束时刻, 返回一个新的 OhDay 实例
-   * @param scope 被修改的时间单位
+   * @description 修改当前 OhDay 实例到指定时间域指定值的结束时刻, 返回一个新的 OhDay 实例
+   * @param scope 被修改的时间域
    * @param value 新的时间值, 默认使用当前时间值
    * @example
    * ```ts
@@ -281,9 +281,9 @@ export class OhDay {
 
   // region 计算
   /**
-   * @description 在当前 OhDay 实例的指定时间单位上增加指定的偏移量, 返回一个新的 OhDay 实例
+   * @description 在当前 OhDay 实例的指定时间域上增加指定的偏移量, 返回一个新的 OhDay 实例
    *   - 当出现日期溢出时, 会自动调整为该月的最后一天
-   * @param scope 被修改的时间单位
+   * @param scope 要增加的时间域
    * @param offset 偏移量, 可以为正数或负数
    * @example
    * ```ts
@@ -298,9 +298,9 @@ export class OhDay {
   }
 
   /**
-   * @description 在当前 OhDay 实例的指定时间单位上减少指定的偏移量, 返回一个新的 OhDay 实例
+   * @description 在当前 OhDay 实例的指定时间域上减少指定的偏移量, 返回一个新的 OhDay 实例
    *   - 当出现日期溢出时, 会自动调整为该月的最后一天
-   * @param scope 被修改的时间单位
+   * @param scope 要减少的时间域
    * @param offset 偏移量, 可以为正数或负数
    * @example
    * ```ts
@@ -348,8 +348,8 @@ export class OhDay {
   }
 
   /**
-   * @description 计算当前 OhDay 实例在指定时间单位上的长度, 返回一个数字, 单位为指定的时间单位
-   * @param scope 指定的时间单位
+   * @description 计算当前 OhDay 实例在指定时间域上的长度, 返回一个数字, 单位为指定的时间单位
+   * @param scope 指定的时间域
    * @param unit 返回值的时间单位
    * @param float 是否返回浮点数, 默认为 false
    * @example
@@ -367,9 +367,9 @@ export class OhDay {
 
   // region 比较
   /**
-   * @description 比较当前 OhDay 实例与目标时间在指定单位上是否相等, 返回一个布尔值
+   * @description 比较当前 OhDay 实例与目标时间在指定时间域上是否相等, 返回一个布尔值
    * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间单位, 默认为毫秒
+   * @param scope 比较的时间域, 默认为毫秒
    * @example
    * ```ts
    * // 按天比较当前时间与目标时间是否相等
@@ -381,9 +381,9 @@ export class OhDay {
   }
 
   /**
-   * @description 比较当前 OhDay 实例在指定单位上是否小于目标时间, 返回一个布尔值
+   * @description 比较当前 OhDay 实例在指定时间域上是否小于目标时间, 返回一个布尔值
    * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间单位, 默认为毫秒
+   * @param scope 比较的时间域, 默认为毫秒
    * @example
    * ```ts
    * // 按天比较当前时间是否小于目标时间
@@ -395,9 +395,9 @@ export class OhDay {
   }
 
   /**
-   * @description 比较当前 OhDay 实例在指定单位上是否大于目标时间, 返回一个布尔值
+   * @description 比较当前 OhDay 实例在指定时间域上是否大于目标时间, 返回一个布尔值
    * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间单位, 默认为毫秒
+   * @param scope 比较的时间域, 默认为毫秒
    * @example
    * ```ts
    * // 按天比较当前时间是否大于目标时间
@@ -409,9 +409,9 @@ export class OhDay {
   }
 
   /**
-   * @description 比较当前 OhDay 实例在指定单位上是否小于等于目标时间, 返回一个布尔值
+   * @description 比较当前 OhDay 实例在指定时间域上是否小于等于目标时间, 返回一个布尔值
    * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间单位, 默认为毫秒
+   * @param scope 比较的时间域, 默认为毫秒
    * @example
    * ```ts
    * // 按天比较当前时间是否小于等于目标时间
@@ -423,9 +423,9 @@ export class OhDay {
   }
 
   /**
-   * @description 比较当前 OhDay 实例在指定单位上是否大于等于目标时间, 返回一个布尔值
+   * @description 比较当前 OhDay 实例在指定时间域上是否大于等于目标时间, 返回一个布尔值
    * @param target 目标时间, 支持多种类型的解析
-   * @param scope 比较的时间单位, 默认为毫秒
+   * @param scope 比较的时间域, 默认为毫秒
    * @example
    * ```ts
    * // 按天比较当前时间是否大于等于目标时间
@@ -441,7 +441,7 @@ export class OhDay {
    *   - 默认比较范围为左闭右开区间, 即 [target1, target2)
    * @param target1 比较范围的起始时间, 支持多种类型的解析
    * @param target2 比较范围的结束时间, 支持多种类型的解析
-   * @param scope 比较的时间单位, 默认为毫秒
+   * @param scope 比较的时间域, 默认为毫秒
    * @example
    * ```ts
    * // 按天判断当前时间是否在两个目标时间之间

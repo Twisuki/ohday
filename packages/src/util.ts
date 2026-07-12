@@ -2,14 +2,14 @@ import type { OhDayFlag } from "./const"
 import { DAY_OF_MONTH, FLAG_DATE, FLAG_MS, FLAG_WEEK, FLAGS } from "./const"
 
 /**
- * @description 获取时间单位 Flag 的索引
+ * @description 获取时间标签 Flag 的索引
  */
 export function getFlagIndex(f: OhDayFlag): number {
   return FLAGS.indexOf(f === FLAG_WEEK ? FLAG_DATE : f)
 }
 
 /**
- * @description 根据索引获取时间单位 Flag
+ * @description 根据索引获取时间标签 Flag
  */
 export function getFlagByIndex(index: number): OhDayFlag {
   return FLAGS[index] ?? FLAG_MS
@@ -17,7 +17,7 @@ export function getFlagByIndex(index: number): OhDayFlag {
 
 /**
  * @description 根据 Flag 获取对应的值
- * @param f 时间单位 Flag
+ * @param f 时间标签 Flag
  * @param cases 值数组
  * @param def 默认值
  */
