@@ -8,6 +8,11 @@ export { OhDayFlag } from "./const"
 export { OhDayLike } from "./format"
 
 /**
+ * @description Plugin function type for OhDay extensions. Receives OhDay class and od factory.
+ */
+export type OhDayPlugin = (instance: typeof OhDay, factory: typeof od) => void
+
+/**
  * @description OhDay class, supports parsing, manipulation, calculation, comparison and output methods for date/time processing
  */
 export class OhDay {
@@ -540,4 +545,14 @@ export class OhDay {
  * od("2023-10-01 12:30:45") // OhDay instance
  * ```
  */
-export const od = (input?: OhDayLike, format?: string): OhDay => new OhDay(input, format)
+export function od(input?: OhDayLike, format?: string): OhDay {
+  return new OhDay(input, format)
+}
+
+/**
+ *  @description Install an OhDay plugin to extend functionality
+ */
+od.use = (plugin: OhDayPlugin) => {
+  plugin(OhDay, od)
+  return od
+}

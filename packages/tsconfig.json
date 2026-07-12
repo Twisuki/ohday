@@ -4,6 +4,9 @@
     "rootDir": "./src",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "paths": {
+      "@twisuki/ohday": ["./src/index.ts"]
+    },
     "resolveJsonModule": true,
     "strict": true,
     "declaration": true,

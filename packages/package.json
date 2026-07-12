@@ -1,6 +1,6 @@
 {
   "name": "@twisuki/ohday",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Chainable, immutable, lightweight date/time processing library",
   "author": "Twisuki",
   "publishConfig": {
@@ -28,7 +28,11 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./plugins/*": "./dist/plugins/*"
+    "./plugin": {
+      "types": "./dist/plugin/index.d.ts",
+      "import": "./dist/plugin/index.mjs",
+      "require": "./dist/plugin/index.js"
+    }
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
