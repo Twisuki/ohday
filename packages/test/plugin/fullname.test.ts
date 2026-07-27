@@ -1,6 +1,6 @@
+import { od } from "@twisuki/ohday"
+import { fullname } from "@twisuki/ohday/plugin"
 import { describe, expect, it } from "vitest"
-import { od } from "../../src"
-import { fullname } from "../../src/plugin"
 
 od.use(fullname)
 

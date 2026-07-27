@@ -1,6 +1,6 @@
+import { od } from "@twisuki/ohday"
 import dayjs from "dayjs"
 import { describe, expect, it } from "vitest"
-import { od } from "../src"
 
 describe("输入", () => {
   it("date 对象", () => {

@@ -57,6 +57,7 @@
     "postpack": "pnpm remove:readme && pnpm remove:license"
   },
   "devDependencies": {
+    "@types/node": "^26.1.1",
     "@vitest/ui": "^4.1.9",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.21",

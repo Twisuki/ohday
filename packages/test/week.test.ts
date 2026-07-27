@@ -1,6 +1,6 @@
+import { od } from "@twisuki/ohday"
 import dayjs from "dayjs"
 import { describe, expect, it } from "vitest"
-import { od } from "../src"
 
 describe("周操作 - c('w')", () => {
   it("修改到指定星期", () => {

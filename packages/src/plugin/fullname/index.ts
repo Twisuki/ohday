@@ -1,249 +1,253 @@
-import type { OhDayFlag, OhDayLike, OhDayPlugin } from "../../index"
+import type { OhDay, OhDayPlugin } from "@twisuki/ohday"
 
-declare module "../../index" {
+declare module "@twisuki/ohday" {
   interface OhDay {
-    // Property getters as methods
+    // region Information (getter aliases)
     /**
-     * @description Alias of getter `s`
-     * @see s
+     * @description Full-name alias of getter `s`
+     * @see {@link OhDay.s}
      */
     getString: () => string
     /**
-     * @description Alias of getter `iso`
-     * @see iso
+     * @description Full-name alias of getter `iso`
+     * @see {@link OhDay.iso}
      */
     getISOString: () => string
     /**
-     * @description Alias of getter `ts`
-     * @see ts
+     * @description Full-name alias of getter `ts`
+     * @see {@link OhDay.ts}
      */
     getTime: () => number
     /**
-     * @description Alias of getter `ts`
-     * @see ts
+     * @description Full-name alias of getter `ts`
+     * @see {@link OhDay.ts}
      */
     getTimeStamp: () => number
     /**
-     * @description Alias of getter `dd`
-     * @see dd
+     * @description Full-name alias of getter `dd`
+     * @see {@link OhDay.dd}
      */
     getDateObject: () => Date
     /**
-     * @description Alias of getter `year`
-     * @see year
+     * @description Full-name alias of getter `year`
+     * @see {@link OhDay.year}
      */
     getYear: () => number
     /**
-     * @description Alias of getter `month`
-     * @see month
+     * @description Full-name alias of getter `month`
+     * @see {@link OhDay.month}
      */
     getMonth: () => number
     /**
-     * @description Alias of getter `date`
-     * @see date
+     * @description Full-name alias of getter `date`
+     * @see {@link OhDay.date}
      */
     getDate: () => number
     /**
-     * @description Alias of getter `hour`
-     * @see hour
+     * @description Full-name alias of getter `hour`
+     * @see {@link OhDay.hour}
      */
     getHour: () => number
     /**
-     * @description Alias of getter `minute`
-     * @see minute
+     * @description Full-name alias of getter `minute`
+     * @see {@link OhDay.minute}
      */
     getMinute: () => number
     /**
-     * @description Alias of getter `second`
-     * @see second
+     * @description Full-name alias of getter `second`
+     * @see {@link OhDay.second}
      */
     getSecond: () => number
     /**
-     * @description Alias of getter `ms`
-     * @see ms
+     * @description Full-name alias of getter `ms`
+     * @see {@link OhDay.ms}
      */
     getMS: () => number
     /**
-     * @description Alias of getter `ms`
-     * @see ms
+     * @description Full-name alias of getter `ms`
+     * @see {@link OhDay.ms}
      */
     getMilliseconds: () => number
     /**
-     * @description Alias of getter `od`
-     * @see od
+     * @description Full-name alias of getter `od`
+     * @see {@link OhDay.od}
      */
     clone: () => OhDay
+    // endregion
 
-    // Output
+    // region Output
     /**
-     * @description Alias of `p()`
-     * @see p
+     * @description Full-name alias of `p()`
+     * @see {@link OhDay.p}
      */
-    format: (format?: string) => string
+    format: OhDay["p"]
     /**
-     * @description Alias of `p()`
-     * @see p
+     * @description Full-name alias of `p()`
+     * @see {@link OhDay.p}
      */
-    print: (format?: string) => string
+    print: OhDay["p"]
     /**
-     * @description Alias of `p()`
-     * @see p
+     * @description Full-name alias of `p()`
+     * @see {@link OhDay.p}
      */
-    toString: (format?: string) => string
+    toString: OhDay["p"]
     /**
-     * @description Alias of `pa()`
-     * @see pa
+     * @description Full-name alias of `pa()`
+     * @see {@link OhDay.pa}
      */
-    printArray: (scope?: OhDayFlag) => number[]
+    printArray: OhDay["pa"]
     /**
-     * @description Alias of `pa()`
-     * @see pa
+     * @description Full-name alias of `pa()`
+     * @see {@link OhDay.pa}
      */
-    toArray: (scope?: OhDayFlag) => number[]
+    toArray: OhDay["pa"]
     /**
-     * @description Alias of `po()`
-     * @see po
+     * @description Full-name alias of `po()`
+     * @see {@link OhDay.po}
      */
-    printObject: (scope?: OhDayFlag) => Record<string, number>
+    printObject: OhDay["po"]
     /**
-     * @description Alias of `po()`
-     * @see po
+     * @description Full-name alias of `po()`
+     * @see {@link OhDay.po}
      */
-    toObject: (scope?: OhDayFlag) => Record<string, number>
+    toObject: OhDay["po"]
     /**
-     * @description Alias of `pd()`
-     * @see pd
+     * @description Full-name alias of `pd()`
+     * @see {@link OhDay.pd}
      */
-    printDate: (scope?: OhDayFlag) => Date
+    printDate: OhDay["pd"]
     /**
-     * @description Alias of `pd()`
-     * @see pd
+     * @description Full-name alias of `pd()`
+     * @see {@link OhDay.pd}
      */
-    toDate: (scope?: OhDayFlag) => Date
+    toDate: OhDay["pd"]
     /**
-     * @description Alias of `pd()`
-     * @see pd
+     * @description Full-name alias of `pd()`
+     * @see {@link OhDay.pd}
      */
-    toDateObject: (scope?: OhDayFlag) => Date
+    toDateObject: OhDay["pd"]
+    // endregion
 
-    // Manipulation
+    // region Manipulation
     /**
-     * @description Alias of `c()`
-     * @see c
+     * @description Full-name alias of `c()`
+     * @see {@link OhDay.c}
      */
-    set: (scope: OhDayFlag, value: number) => OhDay
+    set: OhDay["c"]
     /**
-     * @description Alias of `c()`
-     * @see c
+     * @description Full-name alias of `c()`
+     * @see {@link OhDay.c}
      */
-    change: (scope: OhDayFlag, value: number) => OhDay
+    change: OhDay["c"]
     /**
-     * @description Alias of `cs()`
-     * @see cs
+     * @description Full-name alias of `cs()`
+     * @see {@link OhDay.cs}
      */
-    startOf: (scope: OhDayFlag, value?: number) => OhDay
+    startOf: OhDay["cs"]
     /**
-     * @description Alias of `cs()`
-     * @see cs
+     * @description Full-name alias of `cs()`
+     * @see {@link OhDay.cs}
      */
-    changeToStart: (scope: OhDayFlag, value?: number) => OhDay
+    changeToStart: OhDay["cs"]
     /**
-     * @description Alias of `ce()`
-     * @see ce
+     * @description Full-name alias of `ce()`
+     * @see {@link OhDay.ce}
      */
-    endOf: (scope: OhDayFlag, value?: number) => OhDay
+    endOf: OhDay["ce"]
     /**
-     * @description Alias of `ce()`
-     * @see ce
+     * @description Full-name alias of `ce()`
+     * @see {@link OhDay.ce}
      */
-    changeToEnd: (scope: OhDayFlag, value?: number) => OhDay
+    changeToEnd: OhDay["ce"]
     /**
-     * @description Alias of `g()`
-     * @see g
+     * @description Full-name alias of `g()`
+     * @see {@link OhDay.g}
      */
-    get: (scope?: OhDayFlag) => number
+    get: OhDay["g"]
     /**
-     * @description Alias of `sub()`
-     * @see sub
+     * @description Full-name alias of `sub()`
+     * @see {@link OhDay.sub}
      */
-    subtract: (scope: OhDayFlag, offset: number) => OhDay
+    subtract: OhDay["sub"]
     /**
-     * @description Alias of `len()`
-     * @see len
+     * @description Full-name alias of `len()`
+     * @see {@link OhDay.len}
      */
-    lengthOf: (scope: OhDayFlag, unit?: OhDayFlag, float?: boolean) => number
+    lengthOf: OhDay["len"]
     /**
-     * @description Alias of `len()`
-     * @see len
+     * @description Full-name alias of `len()`
+     * @see {@link OhDay.len}
      */
-    getLength: (scope: OhDayFlag, unit?: OhDayFlag, float?: boolean) => number
+    getLength: OhDay["len"]
+    // endregion
 
-    // Comparison
+    // region Comparison
     /**
-     * @description Alias of `eq()`
-     * @see eq
+     * @description Full-name alias of `eq()`
+     * @see {@link OhDay.eq}
      */
-    isSame: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isSame: OhDay["eq"]
     /**
-     * @description Alias of `eq()`
-     * @see eq
+     * @description Full-name alias of `eq()`
+     * @see {@link OhDay.eq}
      */
-    isEqual: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isEqual: OhDay["eq"]
     /**
-     * @description Alias of `lt()`
-     * @see lt
+     * @description Full-name alias of `lt()`
+     * @see {@link OhDay.lt}
      */
-    isBefore: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isBefore: OhDay["lt"]
     /**
-     * @description Alias of `lt()`
-     * @see lt
+     * @description Full-name alias of `lt()`
+     * @see {@link OhDay.lt}
      */
-    isLessThan: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isLessThan: OhDay["lt"]
     /**
-     * @description Alias of `gt()`
-     * @see gt
+     * @description Full-name alias of `gt()`
+     * @see {@link OhDay.gt}
      */
-    isAfter: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isAfter: OhDay["gt"]
     /**
-     * @description Alias of `gt()`
-     * @see gt
+     * @description Full-name alias of `gt()`
+     * @see {@link OhDay.gt}
      */
-    isGreaterThan: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isGreaterThan: OhDay["gt"]
     /**
-     * @description Alias of `le()`
-     * @see le
+     * @description Full-name alias of `le()`
+     * @see {@link OhDay.le}
      */
-    isSameOrBefore: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isSameOrBefore: OhDay["le"]
     /**
-     * @description Alias of `le()`
-     * @see le
+     * @description Full-name alias of `le()`
+     * @see {@link OhDay.le}
      */
-    isBeforeOrSame: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isBeforeOrSame: OhDay["le"]
     /**
-     * @description Alias of `le()`
-     * @see le
+     * @description Full-name alias of `le()`
+     * @see {@link OhDay.le}
      */
-    isLessOrEqual: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isLessOrEqual: OhDay["le"]
     /**
-     * @description Alias of `ge()`
-     * @see ge
+     * @description Full-name alias of `ge()`
+     * @see {@link OhDay.ge}
      */
-    isSameOrAfter: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isSameOrAfter: OhDay["ge"]
     /**
-     * @description Alias of `ge()`
-     * @see ge
+     * @description Full-name alias of `ge()`
+     * @see {@link OhDay.ge}
      */
-    isAfterOrSame: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isAfterOrSame: OhDay["ge"]
     /**
-     * @description Alias of `ge()`
-     * @see ge
+     * @description Full-name alias of `ge()`
+     * @see {@link OhDay.ge}
      */
-    isGreaterOrEqual: (target: OhDayLike, scope?: OhDayFlag) => boolean
+    isGreaterOrEqual: OhDay["ge"]
     /**
-     * @description Alias of `bt()`
-     * @see bt
+     * @description Full-name alias of `bt()`
+     * @see {@link OhDay.bt}
      */
-    isBetween: (target1: OhDayLike, target2: OhDayLike, scope?: OhDayFlag) => boolean
+    isBetween: OhDay["bt"]
+    // endregion
   }
 }
 

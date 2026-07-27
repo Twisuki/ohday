@@ -1,7 +1,7 @@
+import { od } from "@twisuki/ohday"
 import dayjs from "dayjs"
 import duration from "dayjs/plugin/duration"
 import { describe, expect, it } from "vitest"
-import { od } from "../src"
 
 dayjs.extend(duration)
 

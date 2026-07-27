@@ -5,9 +5,11 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@twisuki/ohday": ["./src/index.ts"]
+      "@twisuki/ohday": ["./src/index.ts"],
+      "@twisuki/ohday/plugin": ["./src/plugin/index.ts"]
     },
     "resolveJsonModule": true,
+    "types": [],
     "strict": true,
     "declaration": true,
     "declarationMap": true,

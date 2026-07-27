@@ -1,6 +1,6 @@
+import { od } from "@twisuki/ohday"
 import dayjs from "dayjs"
 import { describe, expect, it } from "vitest"
-import { od } from "../src"
 
 describe("操作", () => {
   it("修改指定单位", () => {

@@ -1,5 +1,5 @@
+import { od } from "@twisuki/ohday"
 import { describe, expect, it } from "vitest"
-import { od } from "../src"
 
 describe("比较", () => {
   it("比较", () => {
