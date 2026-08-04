@@ -9,8 +9,9 @@ export { OhDayLike } from "./format"
 
 /**
  * @description Plugin function type for OhDay extensions. Receives OhDay class and od factory.
+ *   - The `$i` flag marks whether the plugin has been installed, preventing duplicate installation
  */
-export type OhDayPlugin = (instance: typeof OhDay, factory: typeof od) => void
+export type OhDayPlugin = ((instance: typeof OhDay, factory: typeof od) => void) & { $i?: boolean }
 
 /**
  * @description OhDay class, supports parsing, manipulation, calculation, comparison and output methods for date/time processing
@@ -553,6 +554,9 @@ export function od(input?: OhDayLike, format?: string): OhDay {
  *  @description Install an OhDay plugin to extend functionality
  */
 od.use = (plugin: OhDayPlugin) => {
-  plugin(OhDay, od)
+  if (!plugin.$i) {
+    plugin(OhDay, od)
+    plugin.$i = true
+  }
   return od
 }
