@@ -22,7 +22,7 @@ pnpm install @twisuki/ohday
 ### Input
 
 ```ts
-import { od } from "ohday"
+import { od } from "@twisuki/ohday"
 
 // String parsing (auto-detect format)
 od("2023-10-01 12:30:45") // "2023-10-01 12:30:45"
