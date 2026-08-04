@@ -3,14 +3,14 @@ import type { OhDay, OhDayPlugin } from "@twisuki/ohday"
 declare module "@twisuki/ohday" {
   interface OhDayFactory {
     /**
-     * @description Global switch for ISO 8601 week numbering (1=Monday..7=Sunday)
+     * Global switch for ISO 8601 week numbering (1=Monday..7=Sunday)
      *   - Passing `undefined` (no argument) enables it; a boolean sets it explicitly
      *   - Enabled by default once the plugin is installed
      * @returns The current global ISO-week state
      */
     isoWeek: (flag?: boolean) => boolean
     /**
-     * @description Short-name alias of `isoWeek`
+     * Short-name alias of `isoWeek`
      * @see {@link OhDayFactory.isoWeek}
      */
     iw: (flag?: boolean) => boolean

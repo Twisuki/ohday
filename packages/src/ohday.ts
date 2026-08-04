@@ -8,12 +8,12 @@ export { OhDayFlag } from "./const"
 export { OhDayLike } from "./format"
 
 /**
- * @description Factory function type for creating OhDay instances. Extendable via `declare module` for plugins.
+ * Factory function type for creating OhDay instances. Extendable via `declare module` for plugins.
  */
 export interface OhDayFactory {
   (input?: OhDayLike, format?: string): OhDay
   /**
-   * @description Install an OhDay plugin to extend functionality
+   * Install an OhDay plugin to extend functionality
    */
   use: (plugin: OhDayPlugin) => OhDayFactory
 }
