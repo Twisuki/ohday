@@ -365,7 +365,7 @@ export class OhDay {
    * ```
    */
   len(scope: OhDayFlag, unit?: OhDayFlag, float?: boolean): number {
-    const s = this.ce(scope)
+    const s = this.cs(scope)
     const e = s.add(scope, 1)
     return e.diff(s, unit, float)
   }
