@@ -8,10 +8,21 @@ export { OhDayFlag } from "./const"
 export { OhDayLike } from "./format"
 
 /**
+ * @description Factory function type for creating OhDay instances. Extendable via `declare module` for plugins.
+ */
+export interface OhDayFactory {
+  (input?: OhDayLike, format?: string): OhDay
+  /**
+   * @description Install an OhDay plugin to extend functionality
+   */
+  use: (plugin: OhDayPlugin) => OhDayFactory
+}
+
+/**
  * @description Plugin function type for OhDay extensions. Receives OhDay class and od factory.
  *   - The `$i` flag marks whether the plugin has been installed, preventing duplicate installation
  */
-export type OhDayPlugin = ((instance: typeof OhDay, factory: typeof od) => void) & { $i?: boolean }
+export type OhDayPlugin = ((instance: typeof OhDay, factory: OhDayFactory) => void) & { $i?: boolean }
 
 /**
  * @description OhDay class, supports parsing, manipulation, calculation, comparison and output methods for date/time processing
@@ -546,13 +557,10 @@ export class OhDay {
  * od("2023-10-01 12:30:45") // OhDay instance
  * ```
  */
-export function od(input?: OhDayLike, format?: string): OhDay {
+export const od = ((input?: OhDayLike, format?: string): OhDay => {
   return new OhDay(input, format)
-}
+}) as OhDayFactory
 
-/**
- *  @description Install an OhDay plugin to extend functionality
- */
 od.use = (plugin: OhDayPlugin) => {
   if (!plugin.$i) {
     plugin(OhDay, od)
