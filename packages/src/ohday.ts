@@ -341,8 +341,7 @@ export class OhDay {
    * ```
    */
   diff(target: OhDayLike, unit?: OhDayFlag, float?: boolean): number {
-    const thatDate = parseInput(target)
-    const that = new OhDay(thatDate)
+    const that = new OhDay(parseInput(target))
     const diffMs = this.ts - that.ts
 
     const diffYears = this.year - that.year
@@ -394,7 +393,7 @@ export class OhDay {
    * ```
    */
   eq(target: OhDayLike, scope?: OhDayFlag): boolean {
-    return this.diff(target, scope) === 0
+    return this._cmp(target, scope) === 0
   }
 
   /**
@@ -408,7 +407,7 @@ export class OhDay {
    * ```
    */
   lt(target: OhDayLike, scope?: OhDayFlag): boolean {
-    return this.diff(target, scope) < 0
+    return this._cmp(target, scope) < 0
   }
 
   /**
@@ -422,7 +421,7 @@ export class OhDay {
    * ```
    */
   gt(target: OhDayLike, scope?: OhDayFlag): boolean {
-    return this.diff(target, scope) > 0
+    return this._cmp(target, scope) > 0
   }
 
   /**
@@ -436,7 +435,7 @@ export class OhDay {
    * ```
    */
   le(target: OhDayLike, scope?: OhDayFlag): boolean {
-    return this.diff(target, scope) <= 0
+    return this._cmp(target, scope) <= 0
   }
 
   /**
@@ -450,7 +449,7 @@ export class OhDay {
    * ```
    */
   ge(target: OhDayLike, scope?: OhDayFlag): boolean {
-    return this.diff(target, scope) >= 0
+    return this._cmp(target, scope) >= 0
   }
 
   /**
@@ -543,6 +542,23 @@ export class OhDay {
   pd(scope?: OhDayFlag): Date {
     const arr = this.pa(scope)
     return parseInput(arr)
+  }
+  // endregion
+
+  // region private
+  /**
+   * @description Align both the current and target times to the start of the specified field, then compute the timestamp difference.
+   *   Used internally by comparison methods to avoid the truncation ambiguity of diff() on negative sub-unit values.
+   * @param target - Target time, supports multiple input types
+   * @param scope - The comparison field, defaults to millisecond
+   * @example
+   * ```ts
+   * // Compare by day
+   * od("2023-10-01 12:30:45")._cmp("2023-10-02 00:00:00", "d") // -86400000
+   * ```
+   */
+  private _cmp(target: OhDayLike, scope?: OhDayFlag): number {
+    return this.cs(scope ?? "ms").ts - new OhDay(parseInput(target)).cs(scope ?? "ms").ts
   }
   // endregion
 }

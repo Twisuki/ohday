@@ -26,6 +26,6 @@ describe("比较", () => {
     const d3 = "2023-10-02 00:00:00"
     expect(od(d1).bt(d2, d3)).toBe(true)
     expect(od(d1).bt(d2, d3, "h")).toBe(true)
-    expect(od(d1).bt(d2, d3, "d")).toBe(false)
+    expect(od(d1).bt(d2, d3, "d")).toBe(true)
   })
 })
