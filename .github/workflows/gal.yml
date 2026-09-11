@@ -1,0 +1,59 @@
+name: gal
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build Overview gal docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install libmagic
+        run: sudo apt-get update && sudo apt-get install -y libmagic1
+
+      - name: Install Repo2Gal
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --quiet "git+https://github.com/RhoPaper/Repo2Gal.git@53d1f2fa6ebcdf6bcf882308daee321bbc869db0"
+
+      - name: Generate Overview gal docs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO2GAL_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          REPO2GAL_BASE_URL: https://api.deepseek.com
+          REPO2GAL_MODEL: deepseek-flash
+        run: |
+          .venv/bin/repo2gal ${{ github.repository }} \
+            --mode overview \
+            --asset-pack builtin:cc0-chronicle \
+            --public-assets \
+            --timeout 600
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: output/ohday-overview
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
