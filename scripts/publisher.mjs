@@ -2,9 +2,9 @@
  * @description Publish pipeline for @twisuki/ohday.
  *
  * @usage
- * - `pnpm run publish`
- * - `pnpm run publish -- --dry-run`
- * - `pnpm run publish -- --tag beta`
+ * - `pnpm run publisher`
+ * - `pnpm run publisher --dry-run`
+ * - `pnpm run publisher --tag beta`
  */
 
 import { execSync } from "node:child_process"

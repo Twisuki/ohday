@@ -48,7 +48,7 @@
     "test": "cross-env TZ=Asia/Shanghai vitest",
     "test:ui": "pnpm test --ui",
     "test:run": "pnpm test run",
-    "publish": "node ../scripts/publish.mjs"
+    "publisher": "node ../scripts/publisher.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
