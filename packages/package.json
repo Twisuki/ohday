@@ -48,13 +48,7 @@
     "test": "cross-env TZ=Asia/Shanghai vitest",
     "test:ui": "pnpm test --ui",
     "test:run": "pnpm test run",
-    "copy:readme": "node -e \"require('fs').copyFileSync('../README.md', './README.md')\"",
-    "copy:license": "node -e \"require('fs').copyFileSync('../LICENSE', './LICENSE')\"",
-    "copy": "pnpm copy:readme && pnpm copy:license",
-    "remove:readme": "node -e \"const fs=require('fs');if(fs.existsSync('./README.md')) fs.unlinkSync('./README.md')\"",
-    "remove:license": "node -e \"const fs=require('fs');if(fs.existsSync('./LICENSE')) fs.unlinkSync('./LICENSE')\"",
-    "prepack": "pnpm build && pnpm copy",
-    "postpack": "pnpm remove:readme && pnpm remove:license"
+    "publish": "node ../scripts/publish.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
