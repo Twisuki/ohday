@@ -3,6 +3,8 @@ shellEmulator: true
 trustPolicy: no-downgrade
 
 packages:
-  - packages
+  - ohday
+  - docs
+
 overrides:
   chokidar: 5.0.0

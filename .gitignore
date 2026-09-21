@@ -147,5 +147,5 @@ vite.config.ts.timestamp-*
 .idea
 
 # Publish
-packages/README.md
-packages/LICENSE
+ohday/README.md
+ohday/LICENSE

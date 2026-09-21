@@ -14,7 +14,7 @@ import process from "node:process"
 import { fileURLToPath } from "node:url"
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..")
-const PACKAGE_DIR = resolve(ROOT, "packages")
+const PACKAGE_DIR = resolve(ROOT, "ohday")
 const ASSETS = ["README.md", "LICENSE"]
 
 function log(msg) {
