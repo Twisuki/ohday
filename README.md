@@ -1,4 +1,28 @@
-# ohday - Chainable, immutable, lightweight date/time processing library.
+> [!WARNING]
+> **This repository has been archived and is no longer maintained.**
+>
+> The project has been migrated to the [`xtwis/ohday`](https://github.com/xtwis/ohday) organization repository and republished on npm under the **`@xtwis`** scope. New issues, PRs and releases will not be accepted here.
+
+> [!IMPORTANT]
+> **Use the new package instead:**
+>
+> ```bash
+> # old (deprecated)
+> pnpm add @twisuki/ohday
+>
+> # new
+> pnpm add @xtwis/ohday
+> ```
+>
+> - New repository: <https://github.com/xtwis/ohday>
+> - New npm package: <https://www.npmjs.com/package/@xtwis/ohday>
+> - Issues & PRs: <https://github.com/xtwis/ohday/issues>
+>
+> The contents below are kept as a historical reference only and may be out of date.
+
+---
+
+# ohday (legacy) — Chainable, immutable, lightweight date/time processing library.
 
 ```ts
 od().c("M", 2).add("d", 10).ps("MM/DD YYYY")
@@ -11,10 +35,10 @@ od().c("M", 2).add("d", 10).ps("MM/DD YYYY")
 - **Rich Input Support**: Support for various input types and custom format parsing.
 - **TypeScript Support**: Full TypeScript definitions included.
 
-## Getting Started
+## Getting Started (legacy)
 
 ```bash
-pnpm install @twisuki/ohday
+pnpm install @twisuki/ohday   # ⚠️ deprecated, use @xtwis/ohday
 ```
 
 ## API
@@ -22,7 +46,7 @@ pnpm install @twisuki/ohday
 ### Input
 
 ```ts
-import { od } from "@twisuki/ohday"
+import { od } from "@xtwis/ohday" // current API lives in @xtwis/ohday
 
 // String parsing (auto-detect format)
 od("2023-10-01 12:30:45") // "2023-10-01 12:30:45"
